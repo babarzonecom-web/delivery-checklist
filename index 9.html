@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>出発前確認事項</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&display=swap');
+
+  :root {
+    --ink: #1a1a1a;
+    --paper: #f5f0e8;
+    --rule: #c8b89a;
+    --accent: #8b1a1a;
+    --accent2: #1a4a8b;
+    --check: #2d7a2d;
+    --cell-bg: #fffdf8;
+    --header-bg: #2a2a2a;
+    --stripe: #f0ebe0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* ===== TOP BAR ===== */
+  .topbar {
+    background: var(--header-bg);
+    color: #f5f0e8;
+    padding: 12px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  .topbar-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+  }
+
+  .topbar-sub {
+    font-size: 10px;
+    color: #aaa;
+    margin-top: 2px;
+    letter-spacing: 0.08em;
+  }
+
+  .sync-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #666;
+    transition: background 0.3s;
+    flex-shrink: 0;
+  }
+  .sync-dot.live { background: #4caf50; box-shadow: 0 0 6px #4caf50; }
+  .sync-dot.saving { background: #ff9800; }
+
+  /* ===== TABS ===== */
+  .tabs {
+    display: flex;
+    background: #222;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    padding: 10px 18px;
+    color: #888;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+  .tab.active {
+    color: var(--paper);
+    border-bottom-color: var(--accent);
+  }
+  .tab-add {
+    padding: 10px 14px;
+    color: #555;
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+  .tab-add:hover { color: #999; }
+
+  /* ===== SHEET HEADER ===== */
+  .sheet-header {
+    padding: 16px 16px 8px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .sheet-title-block { flex: 1; }
+
+  .sheet-area-label {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .sheet-name {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--ink);
+    border: none;
+    background: transparent;
+    width: 100%;
+    outline: none;
+  }
+
+  .notice-block {
+    background: var(--accent);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .notice-block .n1 { font-size: 11px; font-weight: 700; }
+  .notice-block .n2 { font-size: 10px; margin-top: 2px; opacity: 0.85; }
+
+  /* ===== TABLE ===== */
+  .table-wrap {
+    padding: 0 12px;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 380px;
+  }
+
+  thead th {
+    background: var(--header-bg);
+    color: #f5f0e8;
+    padding: 9px 8px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    border: 1px solid #444;
+    white-space: nowrap;
+  }
+  thead th:first-child { border-radius: 0; width: 32px; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--rule);
+    transition: background 0.15s;
+  }
+  tbody tr:nth-child(even) { background: var(--stripe); }
+  tbody tr.completed { opacity: 0.55; }
+  tbody tr.completed td { text-decoration: line-through; color: #888; }
+  tbody tr.completed td:first-child,
+  tbody tr.completed td.check-col { text-decoration: none; }
+
+  tbody td {
+    padding: 0;
+    vertical-align: middle;
+    border-right: 1px solid var(--rule);
+    background: transparent;
+  }
+  tbody td:last-child { border-right: none; }
+
+  /* row number */
+  .row-num {
+    width: 28px;
+    text-align: center;
+    font-size: 11px;
+    color: #aaa;
+    padding: 8px 4px;
+    border-right: 1px solid var(--rule);
+  }
+  .row-num.special { color: var(--accent); font-weight: 700; font-size: 10px; }
+
+  /* editable cells */
+  .cell-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    padding: 9px 8px;
+    outline: none;
+    text-align: center;
+  }
+  .cell-input.name { text-align: left; }
+  .cell-input:focus {
+    background: #fff8e8;
+    box-shadow: inset 0 0 0 2px var(--accent2);
+  }
+  .cell-input[type=number] { -moz-appearance: textfield; }
+  .cell-input[type=number]::-webkit-outer-spin-button,
+  .cell-input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+  /* check column */
+  .check-col {
+    width: 44px;
+    text-align: center;
+    padding: 6px 4px;
+  }
+  .check-btn {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    background: white;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .check-btn.done {
+    background: var(--check);
+    border-color: var(--check);
+    color: white;
+  }
+  .check-btn.done::after { content: '✓'; }
+  .check-btn:not(.done)::after { content: ''; }
+
+  /* map btn */
+  .map-btn {
+    width: 28px; height: 28px;
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    cursor: pointer;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto;
+    text-decoration: none;
+    color: var(--accent2);
+  }
+  .map-btn:hover { background: var(--accent2); color: white; }
+
+  /* ===== ADD ROW ===== */
+  .add-row-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 12px;
+    padding: 10px 14px;
+    background: white;
+    border: 2px dashed var(--rule);
+    border-radius: 6px;
+    cursor: pointer;
+    color: #888;
+    font-size: 13px;
+    font-family: 'Noto Sans JP', sans-serif;
+    width: calc(100% - 24px);
+    transition: all 0.15s;
+  }
+  .add-row-btn:hover { border-color: var(--accent2); color: var(--accent2); background: #f0f4ff; }
+
+  /* ===== ACTIONS BAR ===== */
+  .actions {
+    padding: 10px 12px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 9px 16px;
+    border-radius: 6px;
+    border: none;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.04em;
+  }
+  .btn-danger { background: #8b1a1a; color: white; }
+  .btn-danger:hover { background: #a02020; }
+  .btn-neutral { background: #555; color: white; }
+  .btn-neutral:hover { background: #444; }
+  .btn-primary { background: var(--accent2); color: white; }
+  .btn-primary:hover { background: #1a3a7a; }
+
+  /* ===== PROGRESS ===== */
+  .progress-bar-wrap {
+    padding: 8px 12px 4px;
+  }
+  .progress-info {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: #888; margin-bottom: 4px;
+  }
+  .progress-bar {
+    height: 4px;
+    background: var(--rule);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--check);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* ===== MAP MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: white;
+    width: 92vw; max-width: 500px;
+    border-radius: 10px;
+    overflow: hidden;
+    max-height: 90vh;
+    display: flex; flex-direction: column;
+  }
+  .modal-header {
+    background: var(--header-bg);
+    color: white;
+    padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-title { font-weight: 700; font-size: 15px; }
+  .modal-close {
+    background: none; border: none; color: white;
+    font-size: 20px; cursor: pointer; line-height: 1;
+  }
+  .modal-body { padding: 16px; flex: 1; overflow-y: auto; }
+  .modal-body label { font-size: 12px; color: #666; display: block; margin-bottom: 4px; margin-top: 12px; }
+  .modal-body label:first-child { margin-top: 0; }
+  .modal-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    outline: none;
+  }
+  .modal-input:focus { border-color: var(--accent2); }
+  .modal-footer {
+    padding: 12px 16px;
+    border-top: 1px solid #eee;
+    display: flex; gap: 8px; justify-content: flex-end;
+  }
+  .map-iframe-wrap {
+    margin-top: 12px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+  }
+  .map-iframe-wrap iframe { display: block; width: 100%; height: 220px; border: none; }
+  .map-open-link {
+    display: block;
+    text-align: center;
+    margin-top: 8px;
+    padding: 10px;
+    background: var(--accent2);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  /* ===== SHEET TAB MODAL ===== */
+  .sheet-modal-body { padding: 16px; }
+  .sheet-modal-label { font-size: 12px; color: #666; margin-bottom: 4px; }
+  .columns-editor { margin-top: 12px; }
+  .col-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--stripe);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin: 4px;
+    font-size: 12px;
+    cursor: default;
+  }
+  .col-tag .remove-col {
+    cursor: pointer; color: #999; font-size: 14px; line-height: 1;
+    background: none; border: none; padding: 0;
+  }
+  .col-tag .remove-col:hover { color: var(--accent); }
+  .add-col-row { display: flex; gap: 8px; margin-top: 8px; }
+  .add-col-input {
+    flex: 1; padding: 8px 10px; border: 1px solid #ddd;
+    border-radius: 6px; font-family: 'Noto Sans JP', sans-serif; font-size: 13px;
+    outline: none;
+  }
+  .add-col-input:focus { border-color: var(--accent2); }
+
+  /* ===== FIREBASE CONFIG SCREEN ===== */
+  #config-screen {
+    max-width: 480px;
+    margin: 40px auto;
+    padding: 24px 20px;
+  }
+  .config-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px; font-weight: 900;
+    margin-bottom: 8px;
+  }
+  .config-sub { font-size: 13px; color: #666; margin-bottom: 20px; line-height: 1.6; }
+  .config-label { font-size: 12px; color: #555; margin-bottom: 4px; margin-top: 12px; display: block; }
+  .config-input {
+    width: 100%; padding: 10px 12px;
+    border: 1px solid #ccc; border-radius: 6px;
+    font-family: 'Noto Sans JP', sans-serif; font-size: 13px;
+    outline: none;
+  }
+  .config-input:focus { border-color: var(--accent2); }
+  .config-btn {
+    margin-top: 20px; width: 100%;
+    padding: 13px; border: none; border-radius: 8px;
+    background: var(--header-bg); color: white;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px; font-weight: 700;
+    cursor: pointer;
+  }
+  .config-btn:hover { background: #333; }
+  .config-note {
+    margin-top: 16px; font-size: 11px; color: #999; line-height: 1.7;
+  }
+
+  /* ===== MISC ===== */
+  .hidden { display: none !important; }
+  .divider { height: 1px; background: var(--rule); margin: 0 12px 10px; }
+  .section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    color: #999; text-transform: uppercase;
+    padding: 6px 12px 2px;
+  }
+
+  @media (max-width: 400px) {
+    table { font-size: 12px; min-width: 320px; }
+    .cell-input { font-size: 12px; padding: 8px 4px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== CONFIG SCREEN ===== -->
+<div id="config-screen">
+  <div class="config-title">出発前確認事項</div>
+  <div class="config-sub">
+    初回設定：Firebase接続情報を入力してください。<br>
+    一度入力すれば次回から自動接続されます。
+  </div>
+  <label class="config-label">Firebase API Key</label>
+  <input class="config-input" id="cfg-apiKey" placeholder="AIzaSy...">
+  <label class="config-label">Auth Domain</label>
+  <input class="config-input" id="cfg-authDomain" placeholder="your-project.firebaseapp.com">
+  <label class="config-label">Database URL</label>
+  <input class="config-input" id="cfg-dbUrl" placeholder="https://your-project-default-rtdb.firebaseio.com">
+  <label class="config-label">Project ID</label>
+  <input class="config-input" id="cfg-projectId" placeholder="your-project-id">
+  <label class="config-label">App ID</label>
+  <input class="config-input" id="cfg-appId" placeholder="1:123...">
+  <button class="config-btn" onclick="saveConfig()">接続して開始 →</button>
+  <div class="config-note">
+    ※ Firebase Realtime Databaseを使用します。<br>
+    ※ 設定はブラウザに保存されます（端末ごとに1回のみ）。<br>
+    ※ おわプロと同じFirebaseプロジェクトを使えます。
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="app" class="hidden">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">出発前確認事項</div>
+      <div class="topbar-sub" id="sync-label">接続中...</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div id="sync-dot" class="sync-dot"></div>
+      <button class="btn btn-neutral" style="padding:6px 10px;font-size:11px;" onclick="showSettings()">⚙</button>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs" id="tabs-bar">
+    <!-- filled by JS -->
+    <div class="tab-add" onclick="addSheet()" title="シートを追加">＋</div>
+  </div>
+
+  <!-- SHEET CONTENT -->
+  <div id="sheet-content">
+    <!-- filled by JS -->
+  </div>
+
+</div>
+
+<!-- ===== MAP MODAL ===== -->
+<div class="modal-overlay" id="map-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="map-modal-title">📍 地図・住所</span>
+      <button class="modal-close" onclick="closeMapModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <label>店舗名</label>
+      <input class="modal-input" id="map-store-name" placeholder="店舗名">
+      <label>住所（地図検索用）</label>
+      <input class="modal-input" id="map-address" placeholder="例：大阪市中央区..." oninput="updateMapPreview()">
+      <div class="map-iframe-wrap" id="map-preview-wrap" style="display:none">
+        <iframe id="map-iframe" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <a class="map-open-link hidden" id="map-open-link" target="_blank" rel="noopener">Google マップで開く 🗺</a>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-neutral" onclick="closeMapModal()">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveMapInfo()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SHEET SETTINGS MODAL ===== -->
+<div class="modal-overlay" id="sheet-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">シート設定</span>
+      <button class="modal-close" onclick="closeSheetModal()">✕</button>
+    </div>
+    <div class="modal-body sheet-modal-body">
+      <div class="sheet-modal-label">シート名</div>
+      <input class="modal-input" id="sm-name" placeholder="エリア名">
+      <div class="columns-editor">
+        <div class="sheet-modal-label" style="margin-top:14px;">列（チェック列・店名列は固定）</div>
+        <div id="sm-cols-wrap"></div>
+        <div class="add-col-row">
+          <input class="add-col-input" id="sm-new-col" placeholder="列名を入力...">
+          <button class="btn btn-primary" style="padding:8px 12px;font-size:12px;" onclick="addColumn()">追加</button>
+        </div>
+      </div>
+      <div style="margin-top:20px;padding-top:12px;border-top:1px solid #eee;">
+        <button class="btn btn-danger" style="width:100%;" onclick="deleteSheet()">このシートを削除</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-neutral" onclick="closeSheetModal()">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveSheetSettings()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SETTINGS MODAL ===== -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">⚙ 設定</span>
+      <button class="modal-close" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:#555;margin-bottom:16px;">Firebase接続情報を変更します。</p>
+      <label class="config-label">Firebase API Key</label>
+      <input class="modal-input" id="s-apiKey">
+      <label class="config-label" style="margin-top:10px;">Auth Domain</label>
+      <input class="modal-input" id="s-authDomain">
+      <label class="config-label" style="margin-top:10px;">Database URL</label>
+      <input class="modal-input" id="s-dbUrl">
+      <label class="config-label" style="margin-top:10px;">Project ID</label>
+      <input class="modal-input" id="s-projectId">
+      <label class="config-label" style="margin-top:10px;">App ID</label>
+      <input class="modal-input" id="s-appId">
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid #eee;">
+        <button class="btn btn-danger" style="width:100%;margin-bottom:8px;" onclick="resetAllData()">全データリセット（要注意）</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-neutral" onclick="closeSettings()">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveSettings()">保存して再接続</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// =========================================================
+// STATE
+// =========================================================
+let db = null;
+let dbRef = null;
+let state = { sheets: [] };
+let currentSheetIdx = 0;
+let mapRowKey = null;
+let mapSheetIdx = null;
+let editingSheetIdx = null;
+let saveTimer = null;
+
+// =========================================================
+// CONFIG
+// =========================================================
+function loadConfig() {
+  return {
+    apiKey:    localStorage.getItem('deliv_apiKey') || '',
+    authDomain:localStorage.getItem('deliv_authDomain') || '',
+    dbUrl:     localStorage.getItem('deliv_dbUrl') || '',
+    projectId: localStorage.getItem('deliv_projectId') || '',
+    appId:     localStorage.getItem('deliv_appId') || '',
+  };
+}
+
+function saveConfig() {
+  const cfg = {
+    apiKey:     document.getElementById('cfg-apiKey').value.trim(),
+    authDomain: document.getElementById('cfg-authDomain').value.trim(),
+    dbUrl:      document.getElementById('cfg-dbUrl').value.trim(),
+    projectId:  document.getElementById('cfg-projectId').value.trim(),
+    appId:      document.getElementById('cfg-appId').value.trim(),
+  };
+  if (!cfg.apiKey || !cfg.dbUrl) { alert('APIキーとDatabase URLは必須です'); return; }
+  storeConfig(cfg);
+  initFirebase(cfg);
+}
+
+function storeConfig(cfg) {
+  localStorage.setItem('deliv_apiKey', cfg.apiKey);
+  localStorage.setItem('deliv_authDomain', cfg.authDomain);
+  localStorage.setItem('deliv_dbUrl', cfg.dbUrl);
+  localStorage.setItem('deliv_projectId', cfg.projectId);
+  localStorage.setItem('deliv_appId', cfg.appId);
+}
+
+// =========================================================
+// FIREBASE
+// =========================================================
+function initFirebase(cfg) {
+  try {
+    if (firebase.apps.length) {
+      firebase.app().delete().then(() => connectFirebase(cfg));
+    } else {
+      connectFirebase(cfg);
+    }
+  } catch(e) { connectFirebase(cfg); }
+}
+
+function connectFirebase(cfg) {
+  const app = firebase.initializeApp({
+    apiKey: cfg.apiKey,
+    authDomain: cfg.authDomain,
+    databaseURL: cfg.dbUrl,
+    projectId: cfg.projectId,
+    appId: cfg.appId,
+  });
+  db = firebase.database();
+  dbRef = db.ref('delivery_checklist');
+
+  document.getElementById('config-screen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+
+  setSyncStatus('connecting');
+  dbRef.on('value', snap => {
+    const data = snap.val();
+    if (data && data.sheets && data.sheets.length > 0) {
+      state = data;
+    } else {
+      // 初期データ
+      state = getInitialState();
+      pushState();
+    }
+    render();
+    setSyncStatus('live');
+  }, err => {
+    console.error(err);
+    setSyncStatus('offline');
+  });
+}
+
+function pushState() {
+  if (!dbRef) return;
+  setSyncStatus('saving');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    dbRef.set(state).then(() => setSyncStatus('live')).catch(() => setSyncStatus('offline'));
+  }, 600);
+}
+
+function setSyncStatus(s) {
+  const dot = document.getElementById('sync-dot');
+  const lbl = document.getElementById('sync-label');
+  dot.className = 'sync-dot';
+  if (s === 'live')        { dot.classList.add('live'); lbl.textContent = 'リアルタイム同期中'; }
+  else if (s === 'saving') { dot.classList.add('saving'); lbl.textContent = '保存中...'; }
+  else if (s === 'offline'){ lbl.textContent = 'オフライン'; }
+  else                     { lbl.textContent = '接続中...'; }
+}
+
+// =========================================================
+// INITIAL STATE
+// =========================================================
+function getInitialState() {
+  return {
+    sheets: [
+      {
+        name: '梅田・新大阪・豊中エリア',
+        columns: ['箱個数', 'そば', '伝票', '備考'],
+        rows: [
+          { key: uid(), num: '', name: '店舗チェックシート確認', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '', name: '追加商品確認', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '1', name: 'しのぶ庵梅田', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '2', name: 'manimani', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '3', name: '台湾夜市', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '4', name: 'ギャング', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '5', name: 'TATARA', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '6', name: 'なにわこあま福', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '7', name: 'ルコントワ', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '8', name: 'ヤキトリボーイ', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '9', name: 'しのぶ庵新大阪', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '10', name: '香樹', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '11', name: 'バルカフェMASSA伊丹空港', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '12', name: '天助', done: false, values: ['','','',''], address: '', mapSet: false },
+          { key: uid(), num: '13', name: 'しのぶ庵尼崎キューズモール', done: false, values: ['','','',''], address: '', mapSet: false },
+        ]
+      },
+      {
+        name: '北新地',
+        columns: ['箱個数', '後入れ'],
+        rows: [
+          { key: uid(), num: '', name: 'チェックシート確認', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '', name: '冷凍商品・追加確認', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '1', name: '新橋筋　風流', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '2', name: '隠れ鉄板　風流', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '3', name: 'アロイチンチン', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '4', name: 'エスタジ', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '5', name: 'シャンブル', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '6', name: '飛牛', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '7', name: '磯乃家', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '8', name: 'さつま', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '9', name: '南さつま', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '9', name: 'JILL', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '10', name: 'JACK', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '11', name: '才来天', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '', name: 'マグシェ', done: false, values: ['',''], address: '', mapSet: false },
+          { key: uid(), num: '', name: '蔵文', done: false, values: ['',''], address: '', mapSet: false },
+        ]
+      }
+    ]
+  };
+}
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+// =========================================================
+// RENDER
+// =========================================================
+function render() {
+  renderTabs();
+  renderSheet();
+}
+
+function renderTabs() {
+  const bar = document.getElementById('tabs-bar');
+  // remove old tabs (not the + button)
+  const addBtn = bar.querySelector('.tab-add');
+  bar.innerHTML = '';
+  state.sheets.forEach((sh, i) => {
+    const t = document.createElement('div');
+    t.className = 'tab' + (i === currentSheetIdx ? ' active' : '');
+    t.textContent = sh.name;
+    t.onclick = () => { currentSheetIdx = i; render(); };
+    t.ondblclick = () => openSheetModal(i);
+    bar.appendChild(t);
+  });
+  bar.appendChild(addBtn);
+}
+
+function renderSheet() {
+  const cont = document.getElementById('sheet-content');
+  if (!state.sheets.length) { cont.innerHTML = '<div style="padding:24px;color:#888;text-align:center;">シートがありません。＋ で追加してください。</div>'; return; }
+  const sh = state.sheets[currentSheetIdx];
+  const cols = sh.columns;
+  const rows = sh.rows;
+  const doneCount = rows.filter(r => r.done).length;
+  const pct = rows.length ? Math.round(doneCount / rows.length * 100) : 0;
+
+  let html = `
+  <div class="sheet-header">
+    <div class="sheet-title-block">
+      <div class="sheet-area-label">配送エリア</div>
+      <div class="sheet-name">${esc(sh.name)}</div>
+    </div>
+    <div class="notice-block">
+      <div class="n1">確認作業は10秒</div>
+      <div class="n2">確認漏れ対応は2時間</div>
+    </div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-info">
+      <span>進捗</span>
+      <span>${doneCount} / ${rows.length} 店舗 (${pct}%)</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-danger" onclick="resetDone(${currentSheetIdx})">✓ リセット</button>
+    <button class="btn btn-neutral" onclick="openSheetModal(${currentSheetIdx})">シート設定</button>
+  </div>
+  <div class="divider"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th style="text-align:left;padding-left:10px;">店名</th>
+          ${cols.map(c => `<th>${esc(c)}</th>`).join('')}
+          <th>地図</th>
+          <th>完了</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-${currentSheetIdx}">
+  `;
+
+  rows.forEach((row, ri) => {
+    const isSpecial = !row.num;
+    html += `<tr class="${row.done ? 'completed' : ''}" id="row-${row.key}">
+      <td class="row-num ${isSpecial ? 'special' : ''}">${esc(row.num)}</td>
+      <td><input class="cell-input name" value="${esc(row.name)}" placeholder="店舗名"
+        onchange="updateField(${currentSheetIdx},${ri},'name',this.value)"></td>
+      ${cols.map((c, ci) => `<td><input class="cell-input" type="${c === '箱個数' || c === 'そば' || c === '後入れ' ? 'number' : 'text'}"
+        value="${esc((row.values||[])[ci]||'')}" placeholder="-"
+        onchange="updateValue(${currentSheetIdx},${ri},${ci},this.value)"></td>`).join('')}
+      <td class="check-col">
+        <button class="map-btn" onclick="openMapModal(${currentSheetIdx},${ri})" title="${row.mapSet ? row.address : '住所未設定'}">
+          ${row.mapSet ? '📍' : '🗺'}
+        </button>
+      </td>
+      <td class="check-col">
+        <button class="check-btn ${row.done ? 'done' : ''}"
+          onclick="toggleDone(${currentSheetIdx},${ri})"></button>
+      </td>
+    </tr>`;
+  });
+
+  html += `</tbody></table></div>`;
+  html += `<button class="add-row-btn" onclick="addRow(${currentSheetIdx})">＋ 店舗を追加する</button>`;
+
+  cont.innerHTML = html;
+}
+
+function esc(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// =========================================================
+// MUTATIONS
+// =========================================================
+function updateField(si, ri, field, val) {
+  state.sheets[si].rows[ri][field] = val;
+  pushState();
+}
+
+function updateValue(si, ri, ci, val) {
+  if (!state.sheets[si].rows[ri].values) state.sheets[si].rows[ri].values = [];
+  state.sheets[si].rows[ri].values[ci] = val;
+  pushState();
+}
+
+function toggleDone(si, ri) {
+  state.sheets[si].rows[ri].done = !state.sheets[si].rows[ri].done;
+  pushState();
+  render();
+}
+
+function resetDone(si) {
+  if (!confirm('このシートの完了チェックをリセットしますか？')) return;
+  state.sheets[si].rows.forEach(r => r.done = false);
+  pushState();
+  render();
+}
+
+function addRow(si) {
+  const sh = state.sheets[si];
+  const numRows = sh.rows.filter(r => r.num).length;
+  sh.rows.push({
+    key: uid(),
+    num: String(numRows + 1),
+    name: '',
+    done: false,
+    values: sh.columns.map(() => ''),
+    address: '',
+    mapSet: false,
+  });
+  pushState();
+  render();
+  // focus new row name
+  setTimeout(() => {
+    const inputs = document.querySelectorAll('.cell-input.name');
+    if (inputs.length) inputs[inputs.length-1].focus();
+  }, 100);
+}
+
+// =========================================================
+// SHEET MANAGEMENT
+// =========================================================
+function addSheet() {
+  const name = prompt('新しいシートのエリア名を入力してください:');
+  if (!name) return;
+  state.sheets.push({
+    name,
+    columns: ['箱個数', '備考'],
+    rows: [
+      { key: uid(), num: '', name: 'チェックシート確認', done: false, values: ['',''], address: '', mapSet: false },
+    ]
+  });
+  currentSheetIdx = state.sheets.length - 1;
+  pushState();
+  render();
+}
+
+function openSheetModal(si) {
+  editingSheetIdx = si;
+  const sh = state.sheets[si];
+  document.getElementById('sm-name').value = sh.name;
+  renderColTags(sh.columns);
+  document.getElementById('sheet-modal').classList.add('open');
+}
+
+function renderColTags(cols) {
+  const wrap = document.getElementById('sm-cols-wrap');
+  wrap.innerHTML = cols.map((c, i) => `
+    <span class="col-tag">
+      ${esc(c)}
+      <button class="remove-col" onclick="removeColumn(${i})">×</button>
+    </span>`).join('');
+}
+
+function removeColumn(ci) {
+  const sh = state.sheets[editingSheetIdx];
+  if (sh.columns.length <= 1) { alert('列は最低1つ必要です'); return; }
+  sh.columns.splice(ci, 1);
+  sh.rows.forEach(r => { if (r.values) r.values.splice(ci, 1); });
+  renderColTags(sh.columns);
+}
+
+function addColumn() {
+  const inp = document.getElementById('sm-new-col');
+  const name = inp.value.trim();
+  if (!name) return;
+  state.sheets[editingSheetIdx].columns.push(name);
+  state.sheets[editingSheetIdx].rows.forEach(r => { if (r.values) r.values.push(''); });
+  renderColTags(state.sheets[editingSheetIdx].columns);
+  inp.value = '';
+}
+
+function saveSheetSettings() {
+  const sh = state.sheets[editingSheetIdx];
+  sh.name = document.getElementById('sm-name').value.trim() || sh.name;
+  pushState();
+  render();
+  closeSheetModal();
+}
+
+function deleteSheet() {
+  if (state.sheets.length <= 1) { alert('シートは最低1つ必要です'); return; }
+  if (!confirm(`「${state.sheets[editingSheetIdx].name}」を削除しますか？`)) return;
+  state.sheets.splice(editingSheetIdx, 1);
+  currentSheetIdx = Math.min(currentSheetIdx, state.sheets.length - 1);
+  pushState();
+  render();
+  closeSheetModal();
+}
+
+function closeSheetModal() { document.getElementById('sheet-modal').classList.remove('open'); }
+
+// =========================================================
+// MAP MODAL
+// =========================================================
+function openMapModal(si, ri) {
+  mapSheetIdx = si;
+  mapRowKey = ri;
+  const row = state.sheets[si].rows[ri];
+  document.getElementById('map-modal-title').textContent = '📍 ' + (row.name || '地図・住所');
+  document.getElementById('map-store-name').value = row.name || '';
+  document.getElementById('map-address').value = row.address || '';
+  updateMapPreview();
+  document.getElementById('map-modal').classList.add('open');
+}
+
+let mapTimer = null;
+function updateMapPreview() {
+  const addr = document.getElementById('map-address').value.trim();
+  clearTimeout(mapTimer);
+  if (!addr) {
+    document.getElementById('map-preview-wrap').style.display = 'none';
+    document.getElementById('map-open-link').classList.add('hidden');
+    return;
+  }
+  mapTimer = setTimeout(() => {
+    const enc = encodeURIComponent(addr);
+    document.getElementById('map-iframe').src =
+      `https://maps.google.com/maps?q=${enc}&output=embed&hl=ja`;
+    document.getElementById('map-preview-wrap').style.display = 'block';
+    document.getElementById('map-open-link').href = `https://maps.google.com/maps?q=${enc}`;
+    document.getElementById('map-open-link').classList.remove('hidden');
+  }, 700);
+}
+
+function saveMapInfo() {
+  const addr = document.getElementById('map-address').value.trim();
+  const row = state.sheets[mapSheetIdx].rows[mapRowKey];
+  row.address = addr;
+  row.mapSet = !!addr;
+  pushState();
+  render();
+  closeMapModal();
+}
+
+function closeMapModal() {
+  document.getElementById('map-modal').classList.remove('open');
+  document.getElementById('map-iframe').src = '';
+}
+
+// =========================================================
+// SETTINGS MODAL
+// =========================================================
+function showSettings() {
+  const cfg = loadConfig();
+  document.getElementById('s-apiKey').value = cfg.apiKey;
+  document.getElementById('s-authDomain').value = cfg.authDomain;
+  document.getElementById('s-dbUrl').value = cfg.dbUrl;
+  document.getElementById('s-projectId').value = cfg.projectId;
+  document.getElementById('s-appId').value = cfg.appId;
+  document.getElementById('settings-modal').classList.add('open');
+}
+
+function saveSettings() {
+  const cfg = {
+    apiKey:     document.getElementById('s-apiKey').value.trim(),
+    authDomain: document.getElementById('s-authDomain').value.trim(),
+    dbUrl:      document.getElementById('s-dbUrl').value.trim(),
+    projectId:  document.getElementById('s-projectId').value.trim(),
+    appId:      document.getElementById('s-appId').value.trim(),
+  };
+  storeConfig(cfg);
+  closeSettings();
+  location.reload();
+}
+
+function closeSettings() { document.getElementById('settings-modal').classList.remove('open'); }
+
+function resetAllData() {
+  if (!confirm('全データを初期化しますか？この操作は元に戻せません。')) return;
+  if (dbRef) dbRef.set(getInitialState()).then(() => { alert('リセットしました'); location.reload(); });
+}
+
+// =========================================================
+// BOOT
+// =========================================================
+window.onload = () => {
+  const cfg = loadConfig();
+  if (cfg.apiKey && cfg.dbUrl) {
+    initFirebase(cfg);
+  } else {
+    // show config screen (already visible)
+  }
+
+  // close modals on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(el => {
+    el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+  });
+};
+</script>
+</body>
+</html>
