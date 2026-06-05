@@ -11,6 +11,20 @@
 :root{--ink:#1c1c1e;--paper:#f2ede4;--cream:#faf7f2;--rule:#d4c9b5;--accent:#8b2020;--accent2:#1a4a8b;--green:#1e7a3a;--green-bg:#e8f5ec;--header:#1c1c1e;--stripe:#ede8de;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;overscroll-behavior:none;}
+
+/* LOGIN */
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--paper);}
+.login-box{width:92vw;max-width:360px;text-align:center;}
+.login-title{font-family:'Noto Serif JP',serif;font-size:26px;font-weight:900;margin-bottom:6px;}
+.login-sub{font-size:12px;color:#999;margin-bottom:32px;letter-spacing:.06em;}
+.login-card{background:white;border-radius:14px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.1);}
+.login-label{font-size:12px;color:#666;text-align:left;margin-bottom:6px;font-weight:700;letter-spacing:.06em;display:block;}
+.login-input{width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-family:'Noto Sans JP',sans-serif;font-size:16px;outline:none;margin-bottom:8px;}
+.login-input:focus{border-color:var(--accent2);}
+.login-error{color:var(--accent);font-size:12px;margin-bottom:8px;display:none;}
+.login-btn{width:100%;padding:14px;background:var(--header);color:white;border:none;border-radius:10px;font-family:'Noto Serif JP',serif;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:.08em;}
+
+/* TOPBAR */
 .topbar{background:var(--header);color:#f2ede4;padding:12px 16px;position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.4);}
 .topbar-title{font-family:'Noto Serif JP',serif;font-size:16px;font-weight:900;letter-spacing:.06em;}
 .topbar-phase{font-size:10px;color:#aaa;margin-top:1px;}
@@ -19,11 +33,15 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 .sync-dot.live{background:#4caf50;box-shadow:0 0 6px #4caf50;}
 .sync-dot.saving{background:#ff9800;}
 .icon-btn{background:rgba(255,255,255,.1);border:none;color:#f2ede4;width:34px;height:34px;border-radius:8px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+/* TABS */
 .tabs{display:flex;background:#2a2a2a;overflow-x:auto;scrollbar-width:none;}
 .tabs::-webkit-scrollbar{display:none;}
 .tab{padding:9px 16px;color:#777;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;flex-shrink:0;letter-spacing:.05em;}
 .tab.active{color:var(--paper);border-bottom-color:var(--accent);}
 .tab-add{padding:9px 14px;color:#555;font-size:18px;cursor:pointer;flex-shrink:0;}
+
+/* PHASE BAR */
 .phase-bar{display:flex;background:var(--cream);border-bottom:1px solid var(--rule);}
 .phase-step{flex:1;padding:8px 4px;text-align:center;font-size:9px;font-weight:700;color:#bbb;border-bottom:3px solid transparent;transition:all .3s;}
 .phase-step.active{color:var(--accent2);border-bottom-color:var(--accent2);}
@@ -32,16 +50,12 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 .phase-step.active .step-num{background:var(--accent2);color:white;}
 .phase-step.done .step-num{background:var(--green);color:white;}
 .step-label{display:block;font-size:9px;}
+
+/* SCREENS */
 .screen{display:none;}
 .screen.active{display:block;}
-#config-screen{max-width:480px;margin:32px auto;padding:24px 20px;}
-.cfg-title{font-family:'Noto Serif JP',serif;font-size:22px;font-weight:900;margin-bottom:6px;}
-.cfg-sub{font-size:13px;color:#666;line-height:1.7;margin-bottom:20px;}
-.cfg-label{font-size:11px;color:#666;display:block;margin:12px 0 4px;font-weight:700;letter-spacing:.06em;}
-.cfg-input{width:100%;padding:11px 12px;border:1.5px solid var(--rule);border-radius:8px;font-family:'Noto Sans JP',sans-serif;font-size:13px;background:var(--cream);outline:none;}
-.cfg-input:focus{border-color:var(--accent2);}
-.cfg-btn{margin-top:22px;width:100%;padding:14px;background:var(--header);color:var(--paper);border:none;border-radius:10px;font-family:'Noto Serif JP',serif;font-size:16px;font-weight:700;cursor:pointer;}
-.cfg-note{margin-top:14px;font-size:11px;color:#999;line-height:1.8;}
+
+/* PREPARE */
 .sheet-header{padding:14px 16px 8px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
 .sheet-area-lbl{font-size:10px;color:#999;letter-spacing:.1em;margin-bottom:2px;}
 .sheet-name{font-family:'Noto Serif JP',serif;font-size:18px;font-weight:900;}
@@ -69,6 +83,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 .store-input-field[type=number]::-webkit-outer-spin-button,.store-input-field[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
 .add-store-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin:4px 12px 12px;padding:12px;background:white;border:2px dashed var(--rule);border-radius:10px;cursor:pointer;color:#999;font-size:13px;font-family:'Noto Sans JP',sans-serif;width:calc(100% - 24px);}
 .action-bar{padding:12px 16px;display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--rule);background:var(--cream);position:sticky;bottom:0;z-index:100;}
+
+/* CHECK */
 .check-wrap{padding:20px 16px;max-width:480px;margin:0 auto;}
 .check-title{font-family:'Noto Serif JP',serif;font-size:20px;font-weight:900;margin-bottom:4px;}
 .check-sub{font-size:12px;color:#888;margin-bottom:24px;line-height:1.6;}
@@ -80,6 +96,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 .check-item-desc{font-size:12px;color:#888;line-height:1.5;}
 .start-btn{margin-top:24px;width:100%;padding:16px;background:#ccc;color:#888;border:none;border-radius:12px;font-family:'Noto Serif JP',serif;font-size:18px;font-weight:900;letter-spacing:.1em;cursor:not-allowed;transition:all .3s;}
 .start-btn.ready{background:var(--green);color:white;cursor:pointer;box-shadow:0 4px 16px rgba(30,122,58,.35);}
+
+/* DELIVERY */
 .delivery-header{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;}
 .delivery-title{font-family:'Noto Serif JP',serif;font-size:18px;font-weight:900;}
 .prog-wrap{padding:0 16px 12px;}
@@ -102,12 +120,15 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 .del-map-row{border-top:1px solid var(--rule);padding:8px 14px;}
 .del-map-link{font-size:12px;color:var(--accent2);text-decoration:none;}
 .end-btn{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:14px 40px;background:var(--accent);color:white;border:none;border-radius:50px;font-family:'Noto Serif JP',serif;font-size:16px;font-weight:900;letter-spacing:.1em;cursor:pointer;box-shadow:0 4px 20px rgba(139,32,32,.4);white-space:nowrap;}
+
+/* BUTTONS */
 .btn{padding:10px 18px;border-radius:8px;border:none;font-family:'Noto Sans JP',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.04em;flex-shrink:0;}
 .btn-primary{background:var(--accent2);color:white;}
 .btn-green{background:var(--green);color:white;flex:1;text-align:center;font-size:15px;}
-.btn-neutral{background:#555;color:white;}
 .btn-danger{background:var(--accent);color:white;}
 .btn-outline{background:white;color:var(--ink);border:1.5px solid var(--rule);}
+
+/* MODALS */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:300;align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
 .modal{background:white;width:92vw;max-width:480px;border-radius:14px;overflow:hidden;max-height:88vh;display:flex;flex-direction:column;}
@@ -132,51 +153,55 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 </head>
 <body>
 
-  <div class="cfg-sub">Firebase接続情報を入力してください。一度入力すれば次回から自動接続されます。</div>
-  <label class="cfg-label">API KEY</label><input class="cfg-input" id="cfg-apiKey" placeholder="AIzaSy...">
-  <label class="cfg-label">AUTH DOMAIN</label><input class="cfg-input" id="cfg-authDomain" placeholder="your-project.firebaseapp.com">
-  <label class="cfg-label">DATABASE URL</label><input class="cfg-input" id="cfg-dbUrl" placeholder="https://your-project-default-rtdb.firebaseio.com">
-  <label class="cfg-label">PROJECT ID</label><input class="cfg-input" id="cfg-projectId" placeholder="your-project-id">
-  <label class="cfg-label">APP ID</label><input class="cfg-input" id="cfg-appId" placeholder="1:123...">
-  <button class="cfg-btn" onclick="saveConfig()">接続して開始 →</button>
-  <div class="cfg-note">※ Firebase Realtime Databaseを使用します。おわプロと同じFirebaseプロジェクトが使えます。</div>
-</div>
-
-
-<div id="login-screen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f2ede4;">
-  <div style="width:92vw;max-width:360px;text-align:center;">
-    <div style="font-family:'Noto Serif JP',serif;font-size:26px;font-weight:900;margin-bottom:6px;">出発前確認事項</div>
-    <div style="font-size:12px;color:#999;margin-bottom:32px;letter-spacing:.06em;">配送管理システム</div>
-    <div style="background:white;border-radius:14px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.1);">
-      <div style="font-size:12px;color:#666;text-align:left;margin-bottom:6px;font-weight:700;letter-spacing:.06em;">パスワード</div>
-      <input id="pw-input" type="password" placeholder="パスワードを入力"
-        style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-family:'Noto Sans JP',sans-serif;font-size:16px;outline:none;margin-bottom:8px;"
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-title">出発前確認事項</div>
+    <div class="login-sub">配送管理システム</div>
+    <div class="login-card">
+      <label class="login-label">パスワード</label>
+      <input id="pw-input" class="login-input" type="password" placeholder="パスワードを入力"
         onkeydown="if(event.key==='Enter')checkPassword()">
-      <div id="pw-error" style="color:#8b2020;font-size:12px;margin-bottom:8px;display:none;">パスワードが違います</div>
-      <button onclick="checkPassword()"
-        style="width:100%;padding:14px;background:#1c1c1e;color:white;border:none;border-radius:10px;font-family:'Noto Serif JP',serif;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:.08em;">
-        ログイン →
-      </button>
+      <div id="pw-error" class="login-error">パスワードが違います</div>
+      <button class="login-btn" onclick="checkPassword()">ログイン →</button>
     </div>
   </div>
 </div>
 
+<!-- APP -->
 <div id="app" style="display:none">
   <div class="topbar">
-    <div><div class="topbar-title">出発前確認事項</div><div class="topbar-phase" id="phase-label">準備中</div></div>
-    <div class="topbar-right"><div id="sync-dot" class="sync-dot"></div><button class="icon-btn" onclick="showSettings()">⚙</button></div>
+    <div>
+      <div class="topbar-title">出発前確認事項</div>
+      <div class="topbar-phase" id="phase-label">準備中</div>
+    </div>
+    <div class="topbar-right">
+      <div id="sync-dot" class="sync-dot"></div>
+      <button class="icon-btn" onclick="showSettings()">⚙</button>
+    </div>
   </div>
-  <div class="tabs" id="tabs-bar"><div class="tab-add" onclick="addSheet()">＋</div></div>
+
+  <div class="tabs" id="tabs-bar">
+    <div class="tab-add" onclick="addSheet()">＋</div>
+  </div>
+
   <div class="phase-bar">
     <div class="phase-step" id="pstep-0"><div class="step-num">1</div><span class="step-label">準備・入力</span></div>
     <div class="phase-step" id="pstep-1"><div class="step-num">2</div><span class="step-label">出発前確認</span></div>
     <div class="phase-step" id="pstep-2"><div class="step-num">3</div><span class="step-label">配達中</span></div>
   </div>
 
+  <!-- SCREEN 1: PREPARE -->
   <div id="screen-prepare" class="screen active">
     <div class="sheet-header">
-      <div><div class="sheet-area-lbl">配送エリア</div><div class="sheet-name" id="prepare-sheet-name">-</div></div>
-      <div class="notice-pill"><div class="n1">確認作業は10秒</div><div class="n2">確認漏れ対応は2時間</div></div>
+      <div>
+        <div class="sheet-area-lbl">配送エリア</div>
+        <div class="sheet-name" id="prepare-sheet-name">-</div>
+      </div>
+      <div class="notice-pill">
+        <div class="n1">確認作業は10秒</div>
+        <div class="n2">確認漏れ対応は2時間</div>
+      </div>
     </div>
     <div class="store-list" id="store-list"></div>
     <button class="add-store-btn" onclick="addStore()">＋ 店舗を追加する</button>
@@ -186,23 +211,33 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
     </div>
   </div>
 
+  <!-- SCREEN 2: CHECK -->
   <div id="screen-check" class="screen">
     <div class="check-wrap">
       <div class="check-title">出発前チェック</div>
       <div class="check-sub">以下を確認してから配達を開始してください。</div>
       <div class="check-item" id="chk-0" onclick="toggleCheck(0)">
         <div class="check-circle" id="chk-circle-0"></div>
-        <div><div class="check-item-title">📦 箱個数の確認</div><div class="check-item-desc">各店舗分の箱数が揃っているか確認しました</div></div>
+        <div>
+          <div class="check-item-title">📦 箱個数の確認</div>
+          <div class="check-item-desc">各店舗分の箱数が揃っているか確認しました</div>
+        </div>
       </div>
       <div class="check-item" id="chk-1" onclick="toggleCheck(1)">
         <div class="check-circle" id="chk-circle-1"></div>
-        <div><div class="check-item-title">🔍 積み忘れの確認</div><div class="check-item-desc">全商品が車に積み込まれているか確認しました</div></div>
+        <div>
+          <div class="check-item-title">🔍 積み忘れの確認</div>
+          <div class="check-item-desc">全商品が車に積み込まれているか確認しました</div>
+        </div>
       </div>
       <button class="start-btn" id="start-btn" onclick="startDelivery()">配達開始</button>
-      <div style="margin-top:16px;"><button class="btn btn-outline" style="width:100%" onclick="goToPhase('prepare')">← 準備に戻る</button></div>
+      <div style="margin-top:16px;">
+        <button class="btn btn-outline" style="width:100%" onclick="goToPhase('prepare')">← 準備に戻る</button>
+      </div>
     </div>
   </div>
 
+  <!-- SCREEN 3: DELIVERY -->
   <div id="screen-delivery" class="screen">
     <div class="delivery-header">
       <div class="delivery-title" id="delivery-sheet-name">配達中</div>
@@ -220,289 +255,491 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 <!-- MAP MODAL -->
 <div class="modal-overlay" id="map-modal">
   <div class="modal">
-    <div class="modal-header"><span class="modal-title" id="map-modal-title">📍 住所登録</span><button class="modal-close" onclick="closeModal('map-modal')">✕</button></div>
+    <div class="modal-header">
+      <span class="modal-title" id="map-modal-title">📍 住所登録</span>
+      <button class="modal-close" onclick="closeModal('map-modal')">✕</button>
+    </div>
     <div class="modal-body">
       <label class="modal-label">住所</label>
       <input class="modal-input" id="map-addr-input" placeholder="例：大阪市北区..." oninput="updateMapPreview()">
-      <div class="map-preview hidden" id="map-preview"><iframe id="map-iframe" allowfullscreen loading="lazy"></iframe></div>
+      <div class="map-preview hidden" id="map-preview">
+        <iframe id="map-iframe" allowfullscreen loading="lazy"></iframe>
+      </div>
       <a class="map-open-link hidden" id="map-open-link" target="_blank" rel="noopener">Google マップで開く 🗺</a>
     </div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('map-modal')">キャンセル</button><button class="btn btn-primary" onclick="saveMapAddress()">保存</button></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('map-modal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveMapAddress()">保存</button>
+    </div>
   </div>
 </div>
 
 <!-- SHEET MODAL -->
 <div class="modal-overlay" id="sheet-modal">
   <div class="modal">
-    <div class="modal-header"><span class="modal-title">シート設定</span><button class="modal-close" onclick="closeModal('sheet-modal')">✕</button></div>
+    <div class="modal-header">
+      <span class="modal-title">シート設定</span>
+      <button class="modal-close" onclick="closeModal('sheet-modal')">✕</button>
+    </div>
     <div class="modal-body">
-      <label class="modal-label">シート名</label><input class="modal-input" id="sm-name">
+      <label class="modal-label">シート名</label>
+      <input class="modal-input" id="sm-name">
       <label class="modal-label" style="margin-top:16px;">入力列</label>
       <div id="sm-cols-wrap"></div>
-      <div class="add-col-row"><input class="add-col-input" id="sm-new-col" placeholder="列名..."><button class="btn btn-primary" style="padding:9px 14px;font-size:12px;" onclick="addColumn()">追加</button></div>
-      <div style="margin-top:20px;padding-top:14px;border-top:1px solid #eee;"><button class="btn btn-danger" style="width:100%;" onclick="deleteSheet()">このシートを削除</button></div>
+      <div class="add-col-row">
+        <input class="add-col-input" id="sm-new-col" placeholder="列名...">
+        <button class="btn btn-primary" style="padding:9px 14px;font-size:12px;" onclick="addColumn()">追加</button>
+      </div>
+      <div style="margin-top:20px;padding-top:14px;border-top:1px solid #eee;">
+        <button class="btn btn-danger" style="width:100%;" onclick="deleteSheet()">このシートを削除</button>
+      </div>
     </div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('sheet-modal')">キャンセル</button><button class="btn btn-primary" onclick="saveSheetSettings()">保存</button></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('sheet-modal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveSheetSettings()">保存</button>
+    </div>
   </div>
 </div>
 
 <!-- SETTINGS MODAL -->
 <div class="modal-overlay" id="settings-modal">
   <div class="modal">
-    <div class="modal-header"><span class="modal-title">⚙ 設定</span><button class="modal-close" onclick="closeModal('settings-modal')">✕</button></div>
-    <div class="modal-body">
-      <label class="modal-label">API KEY</label><input class="modal-input" id="s-apiKey">
-      <label class="modal-label">AUTH DOMAIN</label><input class="modal-input" id="s-authDomain">
-      <label class="modal-label">DATABASE URL</label><input class="modal-input" id="s-dbUrl">
-      <label class="modal-label">PROJECT ID</label><input class="modal-input" id="s-projectId">
-      <label class="modal-label">APP ID</label><input class="modal-input" id="s-appId">
-      <div style="margin-top:18px;padding-top:14px;border-top:1px solid #eee;"><button class="btn btn-danger" style="width:100%;" onclick="resetAllData()">全データリセット</button></div>
+    <div class="modal-header">
+      <span class="modal-title">⚙ 設定</span>
+      <button class="modal-close" onclick="closeModal('settings-modal')">✕</button>
     </div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('settings-modal')">キャンセル</button><button class="btn btn-primary" onclick="saveSettings()">保存して再接続</button></div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:#666;margin-bottom:16px;">全データをリセットする場合はこちら。</p>
+      <button class="btn btn-danger" style="width:100%;" onclick="resetAllData()">全データリセット</button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('settings-modal')">閉じる</button>
+    </div>
   </div>
 </div>
 
 <script>
-// Firebase structure:
-//   delivery_v2/sheets/{sheetId}/  ← 店舗マスター（永続）
-//     name, columns[], stores/{storeId}/{num,name,address,order}
-//   delivery_v2/sessions/{date}/{sheetId}/  ← 当日セッション
-//     phase, checks[], deliveries/{storeId}/{values{},done}
+// ============================================================
+// FIREBASE CONFIG (hardcoded)
+// ============================================================
+const FIREBASE_CONFIG = {
+  apiKey: 'AIzaSyCI4yGt-rra2PpZuujRkdpes--aYadPYkk',
+  authDomain: 'haitatatsu03.firebaseapp.com',
+  databaseURL: 'https://haitatatsu03-default-rtdb.firebaseio.com',
+  projectId: 'haitatatsu03',
+  appId: '1:1025441436261:web:e10887902b7a833264ac8c'
+};
+const PASSWORD = 'bonchiosamu';
 
-let db=null,sheetsRef=null,sessionsRef=null;
-let sheets={},sessions={};
-let currentSheetId=null;
-let currentDate=getTodayStr();
-let saveTimer=null,mapTargetStoreId=null,dragSrcId=null;
+// ============================================================
+// STATE
+// ============================================================
+let db = null, sheetsRef = null, sessionsRef = null;
+let sheets = {}, sessions = {};
+let currentSheetId = null;
+let currentDate = getTodayStr();
+let saveTimer = null, mapTargetStoreId = null, dragSrcId = null;
 
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
-function getTodayStr(){const d=new Date();return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;}
-function esc(s){if(s==null)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function getSheet(){return sheets[currentSheetId]||null;}
-function getSession(){if(!sessions[currentSheetId])sessions[currentSheetId]={phase:'prepare',checks:[false,false],deliveries:{}};return sessions[currentSheetId];}
-
-function loadConfig(){return{apiKey:localStorage.getItem('dv2_apiKey')||'',authDomain:localStorage.getItem('dv2_authDomain')||'',dbUrl:localStorage.getItem('dv2_dbUrl')||'',projectId:localStorage.getItem('dv2_projectId')||'',appId:localStorage.getItem('dv2_appId')||''};}
-function storeConfig(c){Object.entries(c).forEach(([k,v])=>localStorage.setItem('dv2_'+k,v));}
-function saveConfig(){
-  const c={apiKey:document.getElementById('cfg-apiKey').value.trim(),authDomain:document.getElementById('cfg-authDomain').value.trim(),dbUrl:document.getElementById('cfg-dbUrl').value.trim(),projectId:document.getElementById('cfg-projectId').value.trim(),appId:document.getElementById('cfg-appId').value.trim()};
-  if(!c.apiKey||!c.dbUrl){alert('APIキーとDatabase URLは必須です');return;}
-  storeConfig(c);initFirebase(c);
-}
-function initFirebase(cfg){try{if(firebase.apps.length){firebase.app().delete().then(()=>connectFB(cfg));}else{connectFB(cfg);}}catch(e){connectFB(cfg);}}
-function connectFB(cfg){
-  firebase.initializeApp({apiKey:cfg.apiKey,authDomain:cfg.authDomain,databaseURL:cfg.dbUrl,projectId:cfg.projectId,appId:cfg.appId});
-  db=firebase.database();sheetsRef=db.ref('delivery_v2/sheets');sessionsRef=db.ref('delivery_v2/sessions');
-  document.getElementById('config-screen').style.display='none';document.getElementById('app').style.display='block';
-  setSyncDot('connecting');
-  sheetsRef.on('value',snap=>{
-    const data=snap.val();
-    if(data&&Object.keys(data).length>0){sheets=data;Object.values(sheets).forEach(sh=>{if(!sh.stores)sh.stores={};if(!sh.columns)sh.columns=['箱個数','備考'];});}
-    else{sheets=getInitialSheets();sheetsRef.set(sheets);}
-    if(!currentSheetId||!sheets[currentSheetId])currentSheetId=Object.keys(sheets)[0];
-    renderTabs();renderCurrentScreen();setSyncDot('live');
-  },()=>setSyncDot('offline'));
-  sessionsRef.child(currentDate).on('value',snap=>{sessions=snap.val()||{};renderCurrentScreen();});
-}
-function pushSheets(){if(!sheetsRef)return;setSyncDot('saving');clearTimeout(saveTimer);saveTimer=setTimeout(()=>sheetsRef.set(sheets).then(()=>setSyncDot('live')).catch(()=>setSyncDot('offline')),500);}
-function pushSession(){if(!sessionsRef)return;setSyncDot('saving');clearTimeout(saveTimer);saveTimer=setTimeout(()=>sessionsRef.child(currentDate).child(currentSheetId).set(getSession()).then(()=>setSyncDot('live')).catch(()=>setSyncDot('offline')),400);}
-function setSyncDot(s){const d=document.getElementById('sync-dot');d.className='sync-dot';if(s==='live')d.classList.add('live');else if(s==='saving')d.classList.add('saving');}
-
-function getInitialSheets(){
-  const id1=uid(),id2=uid();
-  function ms(num,name,order){const id=uid();return[id,{id,num,name,address:'',order}];}
-  const s1={};[['','店舗チェックシート確認'],['','追加商品確認'],['1','しのぶ庵梅田'],['2','manimani'],['3','台湾夜市'],['4','ギャング'],['5','TATARA'],['6','なにわこあま福'],['7','ルコントワ'],['8','ヤキトリボーイ'],['9','しのぶ庵新大阪'],['10','香樹'],['11','バルカフェMASSA伊丹空港'],['12','天助'],['13','しのぶ庵尼崎キューズモール']].forEach(([num,name],i)=>{const[id,st]=ms(num,name,i);s1[id]=st;});
-  const s2={};[['','チェックシート確認'],['','冷凍商品・追加確認'],['1','新橋筋　風流'],['2','隠れ鉄板　風流'],['3','アロイチンチン'],['4','エスタジ'],['5','シャンブル'],['6','飛牛'],['7','磯乃家'],['8','さつま'],['9','南さつま'],['9','JILL'],['10','JACK'],['11','才来天'],['','マグシェ'],['','蔵文']].forEach(([num,name],i)=>{const[id,st]=ms(num,name,i);s2[id]=st;});
-  return{[id1]:{name:'梅田・新大阪・豊中エリア',columns:['箱個数','そば','伝票','備考'],stores:s1},[id2]:{name:'北新地',columns:['箱個数','後入れ'],stores:s2}};
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function getTodayStr() { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`; }
+function esc(s) { if(s==null)return''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function getSheet() { return sheets[currentSheetId] || null; }
+function getSession() {
+  if(!sessions[currentSheetId]) sessions[currentSheetId] = {phase:'prepare',checks:[false,false],deliveries:{}};
+  return sessions[currentSheetId];
 }
 
-function renderTabs(){
-  const bar=document.getElementById('tabs-bar');const add=bar.querySelector('.tab-add');bar.innerHTML='';
-  Object.entries(sheets).forEach(([id,sh])=>{const t=document.createElement('div');t.className='tab'+(id===currentSheetId?' active':'');t.textContent=sh.name;t.onclick=()=>{currentSheetId=id;renderTabs();renderCurrentScreen();};bar.appendChild(t);});
-  bar.appendChild(add);
-}
-function renderCurrentScreen(){
-  const sess=getSession();const phase=sess.phase||'prepare';
-  updatePhaseBar(phase);
-  document.getElementById('phase-label').textContent={prepare:'準備・入力中',check:'出発前確認',delivery:'配達中'}[phase]||'';
-  ['prepare','check','delivery'].forEach(p=>document.getElementById('screen-'+p).classList.toggle('active',p===phase));
-  if(phase==='prepare')renderPrepare();
-  else if(phase==='check')renderCheck();
-  else if(phase==='delivery')renderDelivery();
-}
-function updatePhaseBar(phase){
-  const steps=['prepare','check','delivery'];const idx=steps.indexOf(phase);
-  steps.forEach((s,i)=>{const el=document.getElementById('pstep-'+i);el.className='phase-step';if(i<idx)el.classList.add('done');else if(i===idx)el.classList.add('active');});
-}
-function getSortedStores(sh){return Object.entries(sh.stores||{}).sort((a,b)=>(a[1].order||0)-(b[1].order||0));}
-
-function renderPrepare(){
-  const sh=getSheet();if(!sh)return;
-  document.getElementById('prepare-sheet-name').textContent=sh.name;
-  const deliveries=(getSession().deliveries)||{};
-  const list=document.getElementById('store-list');list.innerHTML='';
-  getSortedStores(sh).forEach(([storeId,store])=>{
-    const vals=(deliveries[storeId]&&deliveries[storeId].values)||{};
-    const card=document.createElement('div');card.className='store-card';card.dataset.id=storeId;
-    const inputsHtml=sh.columns.map((col,ci)=>`<div class="store-input-cell"><div class="store-input-label">${esc(col)}</div><input class="store-input-field" type="${['箱個数','そば','後入れ'].includes(col)?'number':'text'}" value="${esc(vals[ci]||'')}" placeholder="-" onchange="updateDeliveryValue('${storeId}',${ci},this.value)"></div>`).join('');
-    card.innerHTML=`<div class="store-card-top"><div class="drag-handle">⠿</div><div class="store-num">${esc(store.num)}</div><input class="store-name-input" value="${esc(store.name)}" placeholder="店舗名" onchange="updateStoreName('${storeId}',this.value)"><div class="store-actions"><button class="store-map-btn" onclick="openMapModal('${storeId}')">${store.address?'📍':'🗺'}</button><button class="store-del-btn" onclick="deleteStore('${storeId}')">×</button></div></div><div class="store-card-inputs">${inputsHtml}</div>`;
-    setupDrag(card,storeId);list.appendChild(card);
-  });
-}
-
-function setupDrag(card,storeId){
-  const handle=card.querySelector('.drag-handle');
-  handle.setAttribute('draggable','true');
-  handle.addEventListener('dragstart',()=>{dragSrcId=storeId;card.style.opacity='.4';});
-  handle.addEventListener('dragend',()=>{card.style.opacity='';});
-  card.addEventListener('dragover',e=>{e.preventDefault();card.classList.add('drag-over');});
-  card.addEventListener('dragleave',()=>card.classList.remove('drag-over'));
-  card.addEventListener('drop',e=>{e.preventDefault();card.classList.remove('drag-over');if(dragSrcId&&dragSrcId!==storeId)reorderStores(dragSrcId,storeId);});
-  let startY=0,clone=null,origRect=null;
-  handle.addEventListener('touchstart',e=>{
-    e.preventDefault();dragSrcId=storeId;startY=e.touches[0].clientY;origRect=card.getBoundingClientRect();
-    clone=card.cloneNode(true);clone.style.cssText=`position:fixed;top:${origRect.top}px;left:${origRect.left}px;width:${origRect.width}px;opacity:.8;z-index:999;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3);border-radius:10px;`;
-    document.body.appendChild(clone);card.style.opacity='.3';
-  },{passive:false});
-  handle.addEventListener('touchmove',e=>{
-    e.preventDefault();if(!clone)return;clone.style.top=(origRect.top+e.touches[0].clientY-startY)+'px';
-    document.querySelectorAll('.store-card').forEach(c=>c.classList.remove('drag-over'));
-    const t=document.elementFromPoint(e.touches[0].clientX,e.touches[0].clientY);
-    const tc=t&&t.closest('.store-card');if(tc&&tc.dataset.id!==storeId)tc.classList.add('drag-over');
-  },{passive:false});
-  handle.addEventListener('touchend',e=>{
-    if(clone){clone.remove();clone=null;}card.style.opacity='';
-    const t=document.elementFromPoint(e.changedTouches[0].clientX,e.changedTouches[0].clientY);
-    const tc=t&&t.closest('.store-card');
-    document.querySelectorAll('.store-card').forEach(c=>c.classList.remove('drag-over'));
-    if(tc&&tc.dataset.id&&tc.dataset.id!==storeId)reorderStores(storeId,tc.dataset.id);
-  });
-}
-
-function reorderStores(fromId,toId){
-  const sh=getSheet();const sorted=getSortedStores(sh);
-  const fi=sorted.findIndex(([id])=>id===fromId);const ti=sorted.findIndex(([id])=>id===toId);
-  if(fi<0||ti<0)return;const item=sorted.splice(fi,1)[0];sorted.splice(ti,0,item);
-  sorted.forEach(([id],i)=>{sh.stores[id].order=i;});pushSheets();renderPrepare();
-}
-
-function renderCheck(){
-  const sess=getSession();const checks=sess.checks||[false,false];
-  [0,1].forEach(i=>{const item=document.getElementById('chk-'+i);const circle=document.getElementById('chk-circle-'+i);item.classList.toggle('checked',!!checks[i]);circle.textContent=checks[i]?'✓':'';});
-  const ready=checks[0]&&checks[1];const btn=document.getElementById('start-btn');
-  btn.classList.toggle('ready',ready);btn.textContent=ready?'配達開始 →':'✓ 全項目を確認してください';
-}
-function toggleCheck(idx){const sess=getSession();if(!sess.checks)sess.checks=[false,false];sess.checks[idx]=!sess.checks[idx];pushSession();renderCheck();}
-
-function renderDelivery(){
-  const sh=getSheet();if(!sh)return;
-  document.getElementById('delivery-sheet-name').textContent=sh.name;
-  const sess=getSession();const deliveries=sess.deliveries||{};const sorted=getSortedStores(sh);
-  const active=sorted.filter(([id])=>{const v=(deliveries[id]&&deliveries[id].values)||{};return Object.values(v).some(x=>x!==''&&x!=null);});
-  const display=active.length>0?active:sorted;
-  const doneCount=display.filter(([id])=>deliveries[id]&&deliveries[id].done).length;
-  const total=display.length;const pct=total?Math.round(doneCount/total*100):0;
-  document.getElementById('prog-text').textContent=`${doneCount} / ${total} 店舗 (${pct}%)`;
-  document.getElementById('prog-fill').style.width=pct+'%';
-  const list=document.getElementById('delivery-list');list.innerHTML='';
-  display.forEach(([storeId,store],idx)=>{
-    const del=deliveries[storeId]||{};const vals=del.values||{};const done=!!del.done;
-    const meta=sh.columns.map((col,ci)=>{const v=vals[ci];return v?`<span>${esc(col)}: <strong>${esc(v)}</strong></span>`:''}).filter(Boolean).join('');
-    const mapHtml=store.address?`<div class="del-map-row"><a class="del-map-link" href="https://maps.google.com/maps?q=${encodeURIComponent(store.address)}" target="_blank" rel="noopener">📍 ${esc(store.address)}</a></div>`:'';
-    const card=document.createElement('div');card.className='del-card'+(done?' done':'');
-    card.innerHTML=`<div class="del-card-main"><div class="del-num">${esc(store.num||String(idx+1))}</div><div class="del-info"><div class="del-name">${esc(store.name)}</div>${meta?`<div class="del-meta">${meta}</div>`:''}</div><button class="del-btn ${done?'done-btn':'pending'}" onclick="toggleDone('${storeId}')">${done?'完了済':'配達完了'}</button></div>${mapHtml}`;
-    list.appendChild(card);
-  });
-}
-
-function updateStoreName(storeId,val){getSheet().stores[storeId].name=val;pushSheets();}
-function updateDeliveryValue(storeId,ci,val){
-  const sess=getSession();if(!sess.deliveries)sess.deliveries={};
-  if(!sess.deliveries[storeId])sess.deliveries[storeId]={values:{},done:false};
-  if(!sess.deliveries[storeId].values)sess.deliveries[storeId].values={};
-  sess.deliveries[storeId].values[ci]=val;pushSession();
-}
-function toggleDone(storeId){
-  const sess=getSession();if(!sess.deliveries)sess.deliveries={};
-  if(!sess.deliveries[storeId])sess.deliveries[storeId]={values:{},done:false};
-  sess.deliveries[storeId].done=!sess.deliveries[storeId].done;pushSession();renderDelivery();
-}
-function addStore(){
-  const sh=getSheet();const sorted=getSortedStores(sh);const numCount=sorted.filter(([,s])=>s.num).length;
-  const id=uid();sh.stores[id]={id,num:String(numCount+1),name:'',address:'',order:sorted.length};
-  pushSheets();renderPrepare();
-  setTimeout(()=>{const ins=document.querySelectorAll('.store-name-input');if(ins.length)ins[ins.length-1].focus();},150);
-}
-function deleteStore(storeId){if(!confirm('この店舗を削除しますか？'))return;delete getSheet().stores[storeId];pushSheets();renderPrepare();}
-
-function goToCheck(){const s=getSession();s.phase='check';if(!s.checks)s.checks=[false,false];pushSession();renderCurrentScreen();}
-function startDelivery(){const s=getSession();if(!s.checks||!s.checks[0]||!s.checks[1])return;s.phase='delivery';pushSession();renderCurrentScreen();}
-function goToPhase(p){if(p==='prepare'&&!confirm('準備画面に戻りますか？'))return;getSession().phase=p;pushSession();renderCurrentScreen();}
-function backToPrepare(){if(!confirm('準備画面に戻りますか？（入力データは保持されます）'))return;getSession().phase='prepare';pushSession();renderCurrentScreen();}
-function endDelivery(){if(!confirm('配達を終了して準備画面に戻りますか？'))return;getSession().phase='prepare';pushSession();renderCurrentScreen();}
-
-function addSheet(){const name=prompt('新しいシートのエリア名:');if(!name)return;const id=uid(),sid=uid();sheets[id]={name,columns:['箱個数','備考'],stores:{[sid]:{id:sid,num:'',name:'チェックシート確認',address:'',order:0}}};currentSheetId=id;pushSheets();renderTabs();renderCurrentScreen();}
-function openSheetModal(){const sh=getSheet();document.getElementById('sm-name').value=sh.name;renderColTags(sh.columns);document.getElementById('sheet-modal').classList.add('open');}
-function renderColTags(cols){document.getElementById('sm-cols-wrap').innerHTML=cols.map((c,i)=>`<span class="col-tag">${esc(c)}<button class="col-remove" onclick="removeColumn(${i})">×</button></span>`).join('');}
-function removeColumn(ci){const sh=getSheet();if(sh.columns.length<=1){alert('列は最低1つ必要です');return;}sh.columns.splice(ci,1);renderColTags(sh.columns);}
-function addColumn(){const inp=document.getElementById('sm-new-col');const name=inp.value.trim();if(!name)return;getSheet().columns.push(name);renderColTags(getSheet().columns);inp.value='';}
-function saveSheetSettings(){const sh=getSheet();const name=document.getElementById('sm-name').value.trim();if(name)sh.name=name;pushSheets();renderTabs();renderCurrentScreen();closeModal('sheet-modal');}
-function deleteSheet(){if(Object.keys(sheets).length<=1){alert('シートは最低1つ必要です');return;}if(!confirm(`「${getSheet().name}」を削除しますか？`))return;delete sheets[currentSheetId];currentSheetId=Object.keys(sheets)[0];pushSheets();renderTabs();renderCurrentScreen();closeModal('sheet-modal');}
-
-let mapTimer=null;
-function openMapModal(storeId){
-  mapTargetStoreId=storeId;const store=getSheet().stores[storeId];
-  document.getElementById('map-modal-title').textContent='📍 '+(store.name||'住所登録');
-  document.getElementById('map-addr-input').value=store.address||'';updateMapPreview();
-  document.getElementById('map-modal').classList.add('open');
-}
-function updateMapPreview(){
-  const addr=document.getElementById('map-addr-input').value.trim();clearTimeout(mapTimer);
-  if(!addr){document.getElementById('map-preview').classList.add('hidden');document.getElementById('map-open-link').classList.add('hidden');return;}
-  mapTimer=setTimeout(()=>{
-    const enc=encodeURIComponent(addr);
-    document.getElementById('map-iframe').src=`https://maps.google.com/maps?q=${enc}&output=embed&hl=ja`;
-    document.getElementById('map-preview').classList.remove('hidden');
-    document.getElementById('map-open-link').href=`https://maps.google.com/maps?q=${enc}`;
-    document.getElementById('map-open-link').classList.remove('hidden');
-  },700);
-}
-function saveMapAddress(){getSheet().stores[mapTargetStoreId].address=document.getElementById('map-addr-input').value.trim();pushSheets();renderPrepare();closeModal('map-modal');}
-
-function showSettings(){
-  const c=loadConfig();document.getElementById('s-apiKey').value=c.apiKey;document.getElementById('s-authDomain').value=c.authDomain;document.getElementById('s-dbUrl').value=c.dbUrl;document.getElementById('s-projectId').value=c.projectId;document.getElementById('s-appId').value=c.appId;
-  document.getElementById('settings-modal').classList.add('open');
-}
-function saveSettings(){storeConfig({apiKey:document.getElementById('s-apiKey').value.trim(),authDomain:document.getElementById('s-authDomain').value.trim(),dbUrl:document.getElementById('s-dbUrl').value.trim(),projectId:document.getElementById('s-projectId').value.trim(),appId:document.getElementById('s-appId').value.trim()});closeModal('settings-modal');location.reload();}
-function resetAllData(){if(!confirm('全データを初期化しますか？'))return;db.ref('delivery_v2').set({sheets:getInitialSheets(),sessions:{}}).then(()=>location.reload());}
-
-function closeModal(id){document.getElementById(id).classList.remove('open');if(id==='map-modal')document.getElementById('map-iframe').src='';}
-
-
-function checkPassword(){
-  const pw=document.getElementById('pw-input').value;
-  if(pw==='bonchiosamu'){
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('app').style.display='block';
+// ============================================================
+// LOGIN
+// ============================================================
+function checkPassword() {
+  const pw = document.getElementById('pw-input').value;
+  if(pw === PASSWORD) {
     sessionStorage.setItem('dv2_auth','1');
-    const cfg={apiKey:'AIzaSyCI4yGt-rra2PpZuujRkdpes--aYadPYkk',authDomain:'haitatatsu03.firebaseapp.com',dbUrl:'https://haitatatsu03-default-rtdb.firebaseio.com',projectId:'haitatatsu03',appId:'1:1025441436261:web:e10887902b7a833264ac8c'};
-    initFirebase(cfg);
-  }else{
-    document.getElementById('pw-error').style.display='block';
-    document.getElementById('pw-input').value='';
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    startApp();
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+    document.getElementById('pw-input').value = '';
     document.getElementById('pw-input').focus();
   }
 }
 
-window.onload=()=>{
-  document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)closeModal(el.id);}));
-  // セッション中は再ログイン不要
-  if(sessionStorage.getItem('dv2_auth')==='1'){
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('app').style.display='block';
-    const cfg={apiKey:'AIzaSyCI4yGt-rra2PpZuujRkdpes--aYadPYkk',authDomain:'haitatatsu03.firebaseapp.com',dbUrl:'https://haitatatsu03-default-rtdb.firebaseio.com',projectId:'haitatatsu03',appId:'1:1025441436261:web:e10887902b7a833264ac8c'};
-    initFirebase(cfg);
+// ============================================================
+// FIREBASE
+// ============================================================
+function startApp() {
+  if(db) return;
+  firebase.initializeApp(FIREBASE_CONFIG);
+  db = firebase.database();
+  sheetsRef = db.ref('delivery_v2/sheets');
+  sessionsRef = db.ref('delivery_v2/sessions');
+  setSyncDot('connecting');
+
+  sheetsRef.on('value', snap => {
+    const data = snap.val();
+    if(data && Object.keys(data).length > 0) {
+      sheets = data;
+      Object.values(sheets).forEach(sh => { if(!sh.stores) sh.stores={}; if(!sh.columns) sh.columns=['箱個数','備考']; });
+    } else {
+      sheets = getInitialSheets();
+      sheetsRef.set(sheets);
+    }
+    if(!currentSheetId || !sheets[currentSheetId]) currentSheetId = Object.keys(sheets)[0];
+    renderTabs();
+    renderCurrentScreen();
+    setSyncDot('live');
+  }, () => setSyncDot('offline'));
+
+  sessionsRef.child(currentDate).on('value', snap => {
+    sessions = snap.val() || {};
+    renderCurrentScreen();
+  });
+}
+
+function pushSheets() {
+  if(!sheetsRef) return;
+  setSyncDot('saving');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => sheetsRef.set(sheets).then(() => setSyncDot('live')).catch(() => setSyncDot('offline')), 500);
+}
+
+function pushSession() {
+  if(!sessionsRef) return;
+  setSyncDot('saving');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => sessionsRef.child(currentDate).child(currentSheetId).set(getSession()).then(() => setSyncDot('live')).catch(() => setSyncDot('offline')), 400);
+}
+
+function setSyncDot(s) {
+  const d = document.getElementById('sync-dot');
+  d.className = 'sync-dot';
+  if(s === 'live') d.classList.add('live');
+  else if(s === 'saving') d.classList.add('saving');
+}
+
+// ============================================================
+// INITIAL DATA
+// ============================================================
+function getInitialSheets() {
+  const id1 = uid(), id2 = uid();
+  function ms(num, name, order) { const id = uid(); return [id, {id, num, name, address:'', order}]; }
+  const s1 = {};
+  [['','店舗チェックシート確認'],['','追加商品確認'],['1','しのぶ庵梅田'],['2','manimani'],['3','台湾夜市'],['4','ギャング'],['5','TATARA'],['6','なにわこあま福'],['7','ルコントワ'],['8','ヤキトリボーイ'],['9','しのぶ庵新大阪'],['10','香樹'],['11','バルカフェMASSA伊丹空港'],['12','天助'],['13','しのぶ庵尼崎キューズモール']].forEach(([num,name],i) => { const [id,st] = ms(num,name,i); s1[id] = st; });
+  const s2 = {};
+  [['','チェックシート確認'],['','冷凍商品・追加確認'],['1','新橋筋　風流'],['2','隠れ鉄板　風流'],['3','アロイチンチン'],['4','エスタジ'],['5','シャンブル'],['6','飛牛'],['7','磯乃家'],['8','さつま'],['9','南さつま'],['9','JILL'],['10','JACK'],['11','才来天'],['','マグシェ'],['','蔵文']].forEach(([num,name],i) => { const [id,st] = ms(num,name,i); s2[id] = st; });
+  return {
+    [id1]: {name:'梅田・新大阪・豊中エリア', columns:['箱個数','そば','伝票','備考'], stores:s1},
+    [id2]: {name:'北新地', columns:['箱個数','後入れ'], stores:s2}
+  };
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function renderTabs() {
+  const bar = document.getElementById('tabs-bar');
+  const add = bar.querySelector('.tab-add');
+  bar.innerHTML = '';
+  Object.entries(sheets).forEach(([id, sh]) => {
+    const t = document.createElement('div');
+    t.className = 'tab' + (id === currentSheetId ? ' active' : '');
+    t.textContent = sh.name;
+    t.onclick = () => { currentSheetId = id; renderTabs(); renderCurrentScreen(); };
+    bar.appendChild(t);
+  });
+  bar.appendChild(add);
+}
+
+function renderCurrentScreen() {
+  const sess = getSession();
+  const phase = sess.phase || 'prepare';
+  updatePhaseBar(phase);
+  document.getElementById('phase-label').textContent = {prepare:'準備・入力中', check:'出発前確認', delivery:'配達中'}[phase] || '';
+  ['prepare','check','delivery'].forEach(p => document.getElementById('screen-'+p).classList.toggle('active', p === phase));
+  if(phase === 'prepare') renderPrepare();
+  else if(phase === 'check') renderCheck();
+  else if(phase === 'delivery') renderDelivery();
+}
+
+function updatePhaseBar(phase) {
+  const steps = ['prepare','check','delivery'];
+  const idx = steps.indexOf(phase);
+  steps.forEach((s,i) => {
+    const el = document.getElementById('pstep-'+i);
+    el.className = 'phase-step';
+    if(i < idx) el.classList.add('done');
+    else if(i === idx) el.classList.add('active');
+  });
+}
+
+function getSortedStores(sh) {
+  return Object.entries(sh.stores || {}).sort((a,b) => (a[1].order||0) - (b[1].order||0));
+}
+
+// ---- PREPARE ----
+function renderPrepare() {
+  const sh = getSheet(); if(!sh) return;
+  document.getElementById('prepare-sheet-name').textContent = sh.name;
+  const deliveries = getSession().deliveries || {};
+  const list = document.getElementById('store-list');
+  list.innerHTML = '';
+  getSortedStores(sh).forEach(([storeId, store]) => {
+    const vals = (deliveries[storeId] && deliveries[storeId].values) || {};
+    const card = document.createElement('div');
+    card.className = 'store-card';
+    card.dataset.id = storeId;
+    const inputsHtml = sh.columns.map((col,ci) => `
+      <div class="store-input-cell">
+        <div class="store-input-label">${esc(col)}</div>
+        <input class="store-input-field" type="${['箱個数','そば','後入れ'].includes(col)?'number':'text'}"
+          value="${esc(vals[ci]||'')}" placeholder="-"
+          onchange="updateDeliveryValue('${storeId}',${ci},this.value)">
+      </div>`).join('');
+    card.innerHTML = `
+      <div class="store-card-top">
+        <div class="drag-handle">⠿</div>
+        <div class="store-num">${esc(store.num)}</div>
+        <input class="store-name-input" value="${esc(store.name)}" placeholder="店舗名"
+          onchange="updateStoreName('${storeId}',this.value)">
+        <div class="store-actions">
+          <button class="store-map-btn" onclick="openMapModal('${storeId}')">${store.address?'📍':'🗺'}</button>
+          <button class="store-del-btn" onclick="deleteStore('${storeId}')">×</button>
+        </div>
+      </div>
+      <div class="store-card-inputs">${inputsHtml}</div>`;
+    setupDrag(card, storeId);
+    list.appendChild(card);
+  });
+}
+
+function setupDrag(card, storeId) {
+  const handle = card.querySelector('.drag-handle');
+  handle.setAttribute('draggable','true');
+  handle.addEventListener('dragstart', () => { dragSrcId = storeId; card.style.opacity = '.4'; });
+  handle.addEventListener('dragend', () => { card.style.opacity = ''; });
+  card.addEventListener('dragover', e => { e.preventDefault(); card.classList.add('drag-over'); });
+  card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+  card.addEventListener('drop', e => { e.preventDefault(); card.classList.remove('drag-over'); if(dragSrcId && dragSrcId !== storeId) reorderStores(dragSrcId, storeId); });
+  let startY = 0, clone = null, origRect = null;
+  handle.addEventListener('touchstart', e => {
+    e.preventDefault(); dragSrcId = storeId; startY = e.touches[0].clientY; origRect = card.getBoundingClientRect();
+    clone = card.cloneNode(true);
+    clone.style.cssText = `position:fixed;top:${origRect.top}px;left:${origRect.left}px;width:${origRect.width}px;opacity:.8;z-index:999;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3);border-radius:10px;`;
+    document.body.appendChild(clone); card.style.opacity = '.3';
+  }, {passive:false});
+  handle.addEventListener('touchmove', e => {
+    e.preventDefault(); if(!clone) return;
+    clone.style.top = (origRect.top + e.touches[0].clientY - startY) + 'px';
+    document.querySelectorAll('.store-card').forEach(c => c.classList.remove('drag-over'));
+    const t = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+    const tc = t && t.closest('.store-card');
+    if(tc && tc.dataset.id !== storeId) tc.classList.add('drag-over');
+  }, {passive:false});
+  handle.addEventListener('touchend', e => {
+    if(clone) { clone.remove(); clone = null; } card.style.opacity = '';
+    const t = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+    const tc = t && t.closest('.store-card');
+    document.querySelectorAll('.store-card').forEach(c => c.classList.remove('drag-over'));
+    if(tc && tc.dataset.id && tc.dataset.id !== storeId) reorderStores(storeId, tc.dataset.id);
+  });
+}
+
+function reorderStores(fromId, toId) {
+  const sh = getSheet();
+  const sorted = getSortedStores(sh);
+  const fi = sorted.findIndex(([id]) => id === fromId);
+  const ti = sorted.findIndex(([id]) => id === toId);
+  if(fi < 0 || ti < 0) return;
+  const item = sorted.splice(fi, 1)[0];
+  sorted.splice(ti, 0, item);
+  sorted.forEach(([id], i) => { sh.stores[id].order = i; });
+  pushSheets(); renderPrepare();
+}
+
+// ---- CHECK ----
+function renderCheck() {
+  const sess = getSession();
+  const checks = sess.checks || [false, false];
+  [0,1].forEach(i => {
+    document.getElementById('chk-'+i).classList.toggle('checked', !!checks[i]);
+    document.getElementById('chk-circle-'+i).textContent = checks[i] ? '✓' : '';
+  });
+  const ready = checks[0] && checks[1];
+  const btn = document.getElementById('start-btn');
+  btn.classList.toggle('ready', ready);
+  btn.textContent = ready ? '配達開始 →' : '✓ 全項目を確認してください';
+}
+
+function toggleCheck(idx) {
+  const sess = getSession();
+  if(!sess.checks) sess.checks = [false, false];
+  sess.checks[idx] = !sess.checks[idx];
+  pushSession(); renderCheck();
+}
+
+// ---- DELIVERY ----
+function renderDelivery() {
+  const sh = getSheet(); if(!sh) return;
+  document.getElementById('delivery-sheet-name').textContent = sh.name;
+  const sess = getSession();
+  const deliveries = sess.deliveries || {};
+  const sorted = getSortedStores(sh);
+  const active = sorted.filter(([id]) => { const v = (deliveries[id] && deliveries[id].values) || {}; return Object.values(v).some(x => x !== '' && x != null); });
+  const display = active.length > 0 ? active : sorted;
+  const doneCount = display.filter(([id]) => deliveries[id] && deliveries[id].done).length;
+  const total = display.length;
+  const pct = total ? Math.round(doneCount/total*100) : 0;
+  document.getElementById('prog-text').textContent = `${doneCount} / ${total} 店舗 (${pct}%)`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  const list = document.getElementById('delivery-list');
+  list.innerHTML = '';
+  display.forEach(([storeId, store], idx) => {
+    const del = deliveries[storeId] || {};
+    const vals = del.values || {};
+    const done = !!del.done;
+    const meta = sh.columns.map((col,ci) => { const v = vals[ci]; return v ? `<span>${esc(col)}: <strong>${esc(v)}</strong></span>` : ''; }).filter(Boolean).join('');
+    const mapHtml = store.address ? `<div class="del-map-row"><a class="del-map-link" href="https://maps.google.com/maps?q=${encodeURIComponent(store.address)}" target="_blank" rel="noopener">📍 ${esc(store.address)}</a></div>` : '';
+    const card = document.createElement('div');
+    card.className = 'del-card' + (done ? ' done' : '');
+    card.innerHTML = `
+      <div class="del-card-main">
+        <div class="del-num">${esc(store.num || String(idx+1))}</div>
+        <div class="del-info">
+          <div class="del-name">${esc(store.name)}</div>
+          ${meta ? `<div class="del-meta">${meta}</div>` : ''}
+        </div>
+        <button class="del-btn ${done?'done-btn':'pending'}" onclick="toggleDone('${storeId}')">
+          ${done ? '完了済' : '配達完了'}
+        </button>
+      </div>${mapHtml}`;
+    list.appendChild(card);
+  });
+}
+
+// ============================================================
+// MUTATIONS
+// ============================================================
+function updateStoreName(storeId, val) { getSheet().stores[storeId].name = val; pushSheets(); }
+function updateDeliveryValue(storeId, ci, val) {
+  const sess = getSession();
+  if(!sess.deliveries) sess.deliveries = {};
+  if(!sess.deliveries[storeId]) sess.deliveries[storeId] = {values:{}, done:false};
+  if(!sess.deliveries[storeId].values) sess.deliveries[storeId].values = {};
+  sess.deliveries[storeId].values[ci] = val;
+  pushSession();
+}
+function toggleDone(storeId) {
+  const sess = getSession();
+  if(!sess.deliveries) sess.deliveries = {};
+  if(!sess.deliveries[storeId]) sess.deliveries[storeId] = {values:{}, done:false};
+  sess.deliveries[storeId].done = !sess.deliveries[storeId].done;
+  pushSession(); renderDelivery();
+}
+function addStore() {
+  const sh = getSheet();
+  const sorted = getSortedStores(sh);
+  const numCount = sorted.filter(([,s]) => s.num).length;
+  const id = uid();
+  sh.stores[id] = {id, num:String(numCount+1), name:'', address:'', order:sorted.length};
+  pushSheets(); renderPrepare();
+  setTimeout(() => { const ins = document.querySelectorAll('.store-name-input'); if(ins.length) ins[ins.length-1].focus(); }, 150);
+}
+function deleteStore(storeId) {
+  if(!confirm('この店舗を削除しますか？')) return;
+  delete getSheet().stores[storeId];
+  pushSheets(); renderPrepare();
+}
+
+// ============================================================
+// PHASE NAVIGATION
+// ============================================================
+function goToCheck() { const s = getSession(); s.phase='check'; if(!s.checks) s.checks=[false,false]; pushSession(); renderCurrentScreen(); }
+function startDelivery() { const s = getSession(); if(!s.checks||!s.checks[0]||!s.checks[1]) return; s.phase='delivery'; pushSession(); renderCurrentScreen(); }
+function goToPhase(p) { if(p==='prepare' && !confirm('準備画面に戻りますか？')) return; getSession().phase=p; pushSession(); renderCurrentScreen(); }
+function backToPrepare() { if(!confirm('準備画面に戻りますか？（入力データは保持されます）')) return; getSession().phase='prepare'; pushSession(); renderCurrentScreen(); }
+function endDelivery() { if(!confirm('配達を終了して準備画面に戻りますか？')) return; getSession().phase='prepare'; pushSession(); renderCurrentScreen(); }
+
+// ============================================================
+// SHEET MANAGEMENT
+// ============================================================
+function addSheet() {
+  const name = prompt('新しいシートのエリア名:'); if(!name) return;
+  const id = uid(), sid = uid();
+  sheets[id] = {name, columns:['箱個数','備考'], stores:{[sid]:{id:sid,num:'',name:'チェックシート確認',address:'',order:0}}};
+  currentSheetId = id; pushSheets(); renderTabs(); renderCurrentScreen();
+}
+function openSheetModal() {
+  const sh = getSheet();
+  document.getElementById('sm-name').value = sh.name;
+  renderColTags(sh.columns);
+  document.getElementById('sheet-modal').classList.add('open');
+}
+function renderColTags(cols) {
+  document.getElementById('sm-cols-wrap').innerHTML = cols.map((c,i) => `<span class="col-tag">${esc(c)}<button class="col-remove" onclick="removeColumn(${i})">×</button></span>`).join('');
+}
+function removeColumn(ci) { const sh = getSheet(); if(sh.columns.length<=1){alert('列は最低1つ必要です');return;} sh.columns.splice(ci,1); renderColTags(sh.columns); }
+function addColumn() { const inp = document.getElementById('sm-new-col'); const name = inp.value.trim(); if(!name) return; getSheet().columns.push(name); renderColTags(getSheet().columns); inp.value=''; }
+function saveSheetSettings() { const sh = getSheet(); const name = document.getElementById('sm-name').value.trim(); if(name) sh.name=name; pushSheets(); renderTabs(); renderCurrentScreen(); closeModal('sheet-modal'); }
+function deleteSheet() {
+  if(Object.keys(sheets).length<=1){alert('シートは最低1つ必要です');return;}
+  if(!confirm(`「${getSheet().name}」を削除しますか？`)) return;
+  delete sheets[currentSheetId]; currentSheetId = Object.keys(sheets)[0];
+  pushSheets(); renderTabs(); renderCurrentScreen(); closeModal('sheet-modal');
+}
+
+// ============================================================
+// MAP
+// ============================================================
+let mapTimer = null;
+function openMapModal(storeId) {
+  mapTargetStoreId = storeId;
+  const store = getSheet().stores[storeId];
+  document.getElementById('map-modal-title').textContent = '📍 ' + (store.name || '住所登録');
+  document.getElementById('map-addr-input').value = store.address || '';
+  updateMapPreview();
+  document.getElementById('map-modal').classList.add('open');
+}
+function updateMapPreview() {
+  const addr = document.getElementById('map-addr-input').value.trim();
+  clearTimeout(mapTimer);
+  if(!addr) { document.getElementById('map-preview').classList.add('hidden'); document.getElementById('map-open-link').classList.add('hidden'); return; }
+  mapTimer = setTimeout(() => {
+    const enc = encodeURIComponent(addr);
+    document.getElementById('map-iframe').src = `https://maps.google.com/maps?q=${enc}&output=embed&hl=ja`;
+    document.getElementById('map-preview').classList.remove('hidden');
+    document.getElementById('map-open-link').href = `https://maps.google.com/maps?q=${enc}`;
+    document.getElementById('map-open-link').classList.remove('hidden');
+  }, 700);
+}
+function saveMapAddress() { getSheet().stores[mapTargetStoreId].address = document.getElementById('map-addr-input').value.trim(); pushSheets(); renderPrepare(); closeModal('map-modal'); }
+
+// ============================================================
+// SETTINGS / RESET
+// ============================================================
+function showSettings() { document.getElementById('settings-modal').classList.add('open'); }
+function resetAllData() {
+  if(!confirm('全データを初期化しますか？この操作は元に戻せません。')) return;
+  db.ref('delivery_v2').set({sheets:getInitialSheets(), sessions:{}}).then(() => location.reload());
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+function closeModal(id) { document.getElementById(id).classList.remove('open'); if(id==='map-modal') document.getElementById('map-iframe').src=''; }
+
+// ============================================================
+// BOOT
+// ============================================================
+window.onload = () => {
+  document.querySelectorAll('.modal-overlay').forEach(el => el.addEventListener('click', e => { if(e.target===el) closeModal(el.id); }));
+  if(sessionStorage.getItem('dv2_auth') === '1') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    startApp();
   } else {
-    setTimeout(()=>document.getElementById('pw-input').focus(), 300);
+    setTimeout(() => document.getElementById('pw-input').focus(), 300);
   }
 };
 </script>
