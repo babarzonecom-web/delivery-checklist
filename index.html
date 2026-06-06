@@ -3,41 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>出発前確認事項</title>
+<title>配達アプリナカヤマくん</title>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Serif+JP:wght@700;900&display=swap');
-:root{--ink:#1c1c1e;--paper:#f2ede4;--cream:#faf7f2;--rule:#d4c9b5;--accent:#8b2020;--accent2:#1a4a8b;--green:#1e7a3a;--green-bg:#e8f5ec;--header:#1c1c1e;--stripe:#ede8de;}
+:root{
+  --ink:#1c1c1e;--paper:#f2ede4;--cream:#faf7f2;--rule:#d4c9b5;
+  --accent:#8b2020;--accent2:#1a4a8b;--green:#1e7a3a;--green-bg:#e8f5ec;
+  --header:#1c1c1e;--stripe:#ede8de;--orange:#c96a00;
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;overscroll-behavior:none;}
 
 /* LOGIN */
 #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--paper);}
 .login-box{width:92vw;max-width:360px;text-align:center;}
-.login-title{font-family:'Noto Serif JP',serif;font-size:26px;font-weight:900;margin-bottom:6px;}
-.login-sub{font-size:12px;color:#999;margin-bottom:32px;letter-spacing:.06em;}
+.login-title{font-family:'Noto Serif JP',serif;font-size:24px;font-weight:900;margin-bottom:4px;line-height:1.3;}
+.login-sub{font-size:11px;color:#999;margin-bottom:28px;letter-spacing:.06em;}
 .login-card{background:white;border-radius:14px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.1);}
-.login-label{font-size:12px;color:#666;text-align:left;margin-bottom:6px;font-weight:700;letter-spacing:.06em;display:block;}
+.login-label{font-size:11px;color:#666;text-align:left;margin-bottom:6px;font-weight:700;letter-spacing:.06em;display:block;}
 .login-input{width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:8px;font-family:'Noto Sans JP',sans-serif;font-size:16px;outline:none;margin-bottom:8px;}
 .login-input:focus{border-color:var(--accent2);}
 .login-error{color:var(--accent);font-size:12px;margin-bottom:8px;display:none;}
 .login-btn{width:100%;padding:14px;background:var(--header);color:white;border:none;border-radius:10px;font-family:'Noto Serif JP',serif;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:.08em;}
 
 /* TOPBAR */
-.topbar{background:var(--header);color:#f2ede4;padding:12px 16px;position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.4);}
-.topbar-title{font-family:'Noto Serif JP',serif;font-size:16px;font-weight:900;letter-spacing:.06em;}
+.topbar{background:var(--header);color:#f2ede4;padding:11px 16px;position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.4);}
+.topbar-title{font-family:'Noto Serif JP',serif;font-size:15px;font-weight:900;letter-spacing:.04em;}
 .topbar-phase{font-size:10px;color:#aaa;margin-top:1px;}
-.topbar-right{display:flex;align-items:center;gap:10px;}
-.sync-dot{width:8px;height:8px;border-radius:50%;background:#555;transition:background .3s;}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#555;transition:background .3s;flex-shrink:0;}
 .sync-dot.live{background:#4caf50;box-shadow:0 0 6px #4caf50;}
 .sync-dot.saving{background:#ff9800;}
-.icon-btn{background:rgba(255,255,255,.1);border:none;color:#f2ede4;width:34px;height:34px;border-radius:8px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.icon-btn{background:rgba(255,255,255,.1);border:none;color:#f2ede4;width:32px;height:32px;border-radius:8px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 
 /* TABS */
 .tabs{display:flex;background:#2a2a2a;overflow-x:auto;scrollbar-width:none;}
 .tabs::-webkit-scrollbar{display:none;}
-.tab{padding:9px 16px;color:#777;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;flex-shrink:0;letter-spacing:.05em;}
+.tab{padding:9px 14px;color:#777;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;flex-shrink:0;}
 .tab.active{color:var(--paper);border-bottom-color:var(--accent);}
 .tab-add{padding:9px 14px;color:#555;font-size:18px;cursor:pointer;flex-shrink:0;}
 
@@ -56,24 +60,39 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 .screen.active{display:block;}
 
 /* PREPARE */
-.sheet-header{padding:14px 16px 8px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.sheet-header{padding:12px 16px 8px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
 .sheet-area-lbl{font-size:10px;color:#999;letter-spacing:.1em;margin-bottom:2px;}
-.sheet-name{font-family:'Noto Serif JP',serif;font-size:18px;font-weight:900;}
+.sheet-name{font-family:'Noto Serif JP',serif;font-size:17px;font-weight:900;}
 .notice-pill{background:var(--accent);color:white;padding:6px 10px;border-radius:6px;text-align:center;flex-shrink:0;}
 .notice-pill .n1{font-size:10px;font-weight:700;}
 .notice-pill .n2{font-size:9px;opacity:.85;margin-top:1px;}
+
+/* STORE CARD */
 .store-list{padding:0 12px 8px;}
-.store-card{background:var(--cream);border:1px solid var(--rule);border-radius:10px;margin-bottom:8px;overflow:hidden;}
-.store-card.drag-over{border-color:var(--accent2);box-shadow:0 0 0 2px var(--accent2);}
-.store-card-top{display:flex;align-items:center;gap:8px;padding:10px 12px 6px;}
-.drag-handle{color:#ccc;font-size:18px;cursor:grab;flex-shrink:0;padding:4px 2px;user-select:none;touch-action:none;}
-.store-num{font-size:11px;color:#aaa;width:18px;flex-shrink:0;text-align:center;font-weight:700;}
-.store-name-input{flex:1;border:none;background:transparent;font-family:'Noto Sans JP',sans-serif;font-size:14px;font-weight:700;color:var(--ink);outline:none;padding:2px 0;}
+.store-card{background:var(--cream);border:1px solid var(--rule);border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.store-card-top{display:flex;align-items:center;gap:8px;padding:10px 12px 0;}
+.move-btns{display:flex;flex-direction:column;gap:2px;flex-shrink:0;}
+.move-btn{width:26px;height:22px;border-radius:4px;border:1px solid var(--rule);background:white;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#666;transition:all .15s;}
+.move-btn:active{background:var(--accent2);color:white;border-color:var(--accent2);}
+.store-name-wrap{flex:1;}
+.store-name-input{width:100%;border:none;background:transparent;font-family:'Noto Sans JP',sans-serif;font-size:15px;font-weight:700;color:var(--ink);outline:none;padding:2px 0;}
 .store-name-input::placeholder{color:#ccc;font-weight:400;}
-.store-actions{display:flex;gap:6px;}
-.store-map-btn{width:30px;height:30px;border-radius:6px;border:1px solid var(--rule);background:var(--paper);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--accent2);}
-.store-del-btn{width:30px;height:30px;border-radius:6px;border:1px solid #f0d0d0;background:#fff5f5;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--accent);}
-.store-card-inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));border-top:1px solid var(--rule);}
+.store-actions{display:flex;gap:6px;flex-shrink:0;}
+.store-pdf-btn{width:30px;height:30px;border-radius:6px;border:1px solid var(--rule);background:var(--paper);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--orange);text-decoration:none;}
+.store-map-btn{width:30px;height:30px;border-radius:6px;border:1px solid var(--rule);background:var(--paper);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--accent2);}
+.store-del-btn{width:30px;height:30px;border-radius:6px;border:1px solid #f0d0d0;background:#fff5f5;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--accent);}
+
+/* BOX COUNT - BIG */
+.store-box-count{padding:8px 12px 4px;display:flex;align-items:center;gap:10px;}
+.box-count-label{font-size:10px;color:#999;font-weight:700;letter-spacing:.06em;flex-shrink:0;}
+.box-count-display{font-family:'Noto Serif JP',serif;font-size:42px;font-weight:900;color:var(--ink);line-height:1;min-width:60px;}
+.box-count-display.has-value{color:var(--accent2);}
+.box-count-input{font-family:'Noto Serif JP',serif;font-size:42px;font-weight:900;color:var(--accent2);border:none;background:transparent;outline:none;width:80px;-moz-appearance:textfield;}
+.box-count-input::-webkit-outer-spin-button,.box-count-input::-webkit-inner-spin-button{-webkit-appearance:none;}
+.box-count-input::placeholder{color:#ddd;font-size:36px;}
+
+/* OTHER INPUTS */
+.store-card-inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(80px,1fr));border-top:1px solid var(--rule);margin-top:8px;}
 .store-input-cell{border-right:1px solid var(--rule);}
 .store-input-cell:last-child{border-right:none;}
 .store-input-label{font-size:9px;color:#999;padding:5px 8px 0;letter-spacing:.06em;font-weight:700;}
@@ -81,13 +100,14 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 .store-input-field:focus{background:#fff8e8;}
 .store-input-field[type=number]{-moz-appearance:textfield;}
 .store-input-field[type=number]::-webkit-outer-spin-button,.store-input-field[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
+
 .add-store-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin:4px 12px 12px;padding:12px;background:white;border:2px dashed var(--rule);border-radius:10px;cursor:pointer;color:#999;font-size:13px;font-family:'Noto Sans JP',sans-serif;width:calc(100% - 24px);}
 .action-bar{padding:12px 16px;display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--rule);background:var(--cream);position:sticky;bottom:0;z-index:100;}
 
 /* CHECK */
 .check-wrap{padding:20px 16px;max-width:480px;margin:0 auto;}
 .check-title{font-family:'Noto Serif JP',serif;font-size:20px;font-weight:900;margin-bottom:4px;}
-.check-sub{font-size:12px;color:#888;margin-bottom:24px;line-height:1.6;}
+.check-sub{font-size:12px;color:#888;margin-bottom:20px;line-height:1.6;}
 .check-item{background:var(--cream);border:2px solid var(--rule);border-radius:12px;padding:16px;margin-bottom:12px;display:flex;align-items:flex-start;gap:14px;cursor:pointer;transition:all .2s;}
 .check-item.checked{border-color:var(--green);background:var(--green-bg);}
 .check-circle{width:28px;height:28px;border-radius:50%;border:2px solid #ccc;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .2s;margin-top:1px;}
@@ -98,33 +118,41 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 .start-btn.ready{background:var(--green);color:white;cursor:pointer;box-shadow:0 4px 16px rgba(30,122,58,.35);}
 
 /* DELIVERY */
-.delivery-header{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;}
-.delivery-title{font-family:'Noto Serif JP',serif;font-size:18px;font-weight:900;}
-.prog-wrap{padding:0 16px 12px;}
+.delivery-header{padding:12px 16px 8px;display:flex;align-items:center;justify-content:space-between;}
+.delivery-title{font-family:'Noto Serif JP',serif;font-size:17px;font-weight:900;}
+.prog-wrap{padding:0 16px 10px;}
 .prog-info{display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:4px;}
 .prog-bar{height:6px;background:var(--rule);border-radius:3px;overflow:hidden;}
 .prog-fill{height:100%;background:var(--green);border-radius:3px;transition:width .4s ease;}
 .delivery-list{padding:0 12px 100px;}
+
 .del-card{background:var(--cream);border:1.5px solid var(--rule);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:all .3s;}
-.del-card.done{opacity:.5;border-color:var(--green);}
-.del-card-main{display:flex;align-items:center;gap:12px;padding:14px;}
-.del-num{width:28px;height:28px;border-radius:50%;background:var(--header);color:var(--paper);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
-.del-card.done .del-num{background:var(--green);}
-.del-info{flex:1;}
+.del-card.done{opacity:.55;border-color:var(--green);}
+.del-card-main{display:flex;align-items:center;gap:10px;padding:12px 14px;}
+.del-info{flex:1;min-width:0;}
 .del-name{font-weight:700;font-size:15px;}
 .del-card.done .del-name{text-decoration:line-through;color:#888;}
-.del-meta{font-size:11px;color:#888;margin-top:3px;display:flex;gap:10px;flex-wrap:wrap;}
-.del-btn{padding:10px 14px;border-radius:8px;border:none;font-family:'Noto Sans JP',sans-serif;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;}
+
+/* BIG BOX NUMBER in delivery */
+.del-box-num{font-family:'Noto Serif JP',serif;font-size:38px;font-weight:900;color:var(--accent2);line-height:1;flex-shrink:0;min-width:48px;text-align:center;}
+.del-card.done .del-box-num{color:#aaa;}
+.del-box-label{font-size:9px;color:#999;font-weight:700;letter-spacing:.06em;text-align:center;margin-top:2px;}
+
+.del-meta{font-size:11px;color:#888;margin-top:3px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.del-time{font-size:11px;color:var(--green);font-weight:700;margin-top:3px;}
+.del-btn{padding:10px 12px;border-radius:8px;border:none;font-family:'Noto Sans JP',sans-serif;font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0;line-height:1.3;text-align:center;}
 .del-btn.pending{background:var(--accent2);color:white;}
 .del-btn.done-btn{background:#eee;color:#aaa;}
-.del-map-row{border-top:1px solid var(--rule);padding:8px 14px;}
-.del-map-link{font-size:12px;color:var(--accent2);text-decoration:none;}
-.end-btn{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:14px 40px;background:var(--accent);color:white;border:none;border-radius:50px;font-family:'Noto Serif JP',serif;font-size:16px;font-weight:900;letter-spacing:.1em;cursor:pointer;box-shadow:0 4px 20px rgba(139,32,32,.4);white-space:nowrap;}
+.del-card-footer{border-top:1px solid var(--rule);padding:8px 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.del-map-link{font-size:12px;color:var(--accent2);text-decoration:none;display:flex;align-items:center;gap:3px;}
+.del-pdf-link{font-size:12px;color:var(--orange);text-decoration:none;display:flex;align-items:center;gap:3px;}
+
+.end-btn{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:14px 36px;background:var(--accent);color:white;border:none;border-radius:50px;font-family:'Noto Serif JP',serif;font-size:15px;font-weight:900;letter-spacing:.08em;cursor:pointer;box-shadow:0 4px 20px rgba(139,32,32,.4);white-space:nowrap;}
 
 /* BUTTONS */
-.btn{padding:10px 18px;border-radius:8px;border:none;font-family:'Noto Sans JP',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.04em;flex-shrink:0;}
+.btn{padding:10px 16px;border-radius:8px;border:none;font-family:'Noto Sans JP',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.04em;flex-shrink:0;}
 .btn-primary{background:var(--accent2);color:white;}
-.btn-green{background:var(--green);color:white;flex:1;text-align:center;font-size:15px;}
+.btn-green{background:var(--green);color:white;flex:1;text-align:center;font-size:14px;}
 .btn-danger{background:var(--accent);color:white;}
 .btn-outline{background:white;color:var(--ink);border:1.5px solid var(--rule);}
 
@@ -142,12 +170,14 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 .modal-input:focus{border-color:var(--accent2);}
 .modal-footer{padding:12px 16px;border-top:1px solid #eee;display:flex;gap:8px;justify-content:flex-end;}
 .map-preview{margin-top:12px;border-radius:8px;overflow:hidden;border:1px solid #ddd;}
-.map-preview iframe{display:block;width:100%;height:200px;border:none;}
+.map-preview iframe{display:block;width:100%;height:180px;border:none;}
 .map-open-link{display:block;text-align:center;margin-top:8px;padding:10px;background:var(--accent2);color:white;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;}
+.pdf-preview-link{display:block;text-align:center;margin-top:10px;padding:10px;background:var(--orange);color:white;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;}
 .col-tag{display:inline-flex;align-items:center;gap:4px;background:var(--stripe);border:1px solid var(--rule);border-radius:6px;padding:5px 10px;margin:3px;font-size:12px;}
 .col-remove{cursor:pointer;color:#aaa;font-size:15px;background:none;border:none;padding:0;}
 .add-col-row{display:flex;gap:8px;margin-top:8px;}
 .add-col-input{flex:1;padding:9px 11px;border:1.5px solid #ddd;border-radius:8px;font-family:'Noto Sans JP',sans-serif;font-size:13px;outline:none;}
+.modal-note{font-size:11px;color:#999;margin-top:8px;line-height:1.6;}
 .hidden{display:none!important;}
 </style>
 </head>
@@ -156,7 +186,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
-    <div class="login-title">出発前確認事項</div>
+    <div class="login-title">配達アプリ<br>ナカヤマくん</div>
     <div class="login-sub">配送管理システム</div>
     <div class="login-card">
       <label class="login-label">パスワード</label>
@@ -172,7 +202,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 <div id="app" style="display:none">
   <div class="topbar">
     <div>
-      <div class="topbar-title">出発前確認事項</div>
+      <div class="topbar-title">配達アプリナカヤマくん</div>
       <div class="topbar-phase" id="phase-label">準備中</div>
     </div>
     <div class="topbar-right">
@@ -191,7 +221,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
     <div class="phase-step" id="pstep-2"><div class="step-num">3</div><span class="step-label">配達中</span></div>
   </div>
 
-  <!-- SCREEN 1: PREPARE -->
+  <!-- PREPARE -->
   <div id="screen-prepare" class="screen active">
     <div class="sheet-header">
       <div>
@@ -211,7 +241,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
     </div>
   </div>
 
-  <!-- SCREEN 2: CHECK -->
+  <!-- CHECK -->
   <div id="screen-check" class="screen">
     <div class="check-wrap">
       <div class="check-title">出発前チェック</div>
@@ -231,17 +261,17 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
         </div>
       </div>
       <button class="start-btn" id="start-btn" onclick="startDelivery()">配達開始</button>
-      <div style="margin-top:16px;">
+      <div style="margin-top:14px;">
         <button class="btn btn-outline" style="width:100%" onclick="goToPhase('prepare')">← 準備に戻る</button>
       </div>
     </div>
   </div>
 
-  <!-- SCREEN 3: DELIVERY -->
+  <!-- DELIVERY -->
   <div id="screen-delivery" class="screen">
     <div class="delivery-header">
       <div class="delivery-title" id="delivery-sheet-name">配達中</div>
-      <button class="btn btn-outline" style="font-size:12px;padding:8px 12px;" onclick="backToPrepare()">準備に戻る</button>
+      <button class="btn btn-outline" style="font-size:11px;padding:7px 10px;" onclick="backToPrepare()">準備に戻る</button>
     </div>
     <div class="prog-wrap">
       <div class="prog-info"><span>配達進捗</span><span id="prog-text">0 / 0 店舗</span></div>
@@ -274,6 +304,29 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
   </div>
 </div>
 
+<!-- PDF MODAL -->
+<div class="modal-overlay" id="pdf-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="pdf-modal-title">📄 配達方法PDF</span>
+      <button class="modal-close" onclick="closeModal('pdf-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <label class="modal-label">Google Drive の共有リンク</label>
+      <input class="modal-input" id="pdf-url-input" placeholder="https://drive.google.com/...">
+      <div class="modal-note">
+        ※ Google DriveでPDFを開き「共有」→「リンクをコピー」してここに貼り付けてください。<br>
+        ※ 共有設定は「リンクを知っている全員」にしてください。
+      </div>
+      <a class="pdf-preview-link hidden" id="pdf-preview-link" target="_blank" rel="noopener">PDFを確認する 📄</a>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('pdf-modal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="savePdfUrl()">保存</button>
+    </div>
+  </div>
+</div>
+
 <!-- SHEET MODAL -->
 <div class="modal-overlay" id="sheet-modal">
   <div class="modal">
@@ -284,7 +337,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
     <div class="modal-body">
       <label class="modal-label">シート名</label>
       <input class="modal-input" id="sm-name">
-      <label class="modal-label" style="margin-top:16px;">入力列</label>
+      <label class="modal-label" style="margin-top:16px;">追加入力列（箱個数は固定）</label>
       <div id="sm-cols-wrap"></div>
       <div class="add-col-row">
         <input class="add-col-input" id="sm-new-col" placeholder="列名...">
@@ -319,9 +372,6 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 </div>
 
 <script>
-// ============================================================
-// FIREBASE CONFIG (hardcoded)
-// ============================================================
 const FIREBASE_CONFIG = {
   apiKey: 'AIzaSyCI4yGt-rra2PpZuujRkdpes--aYadPYkk',
   authDomain: 'haitatatsu03.firebaseapp.com',
@@ -331,17 +381,15 @@ const FIREBASE_CONFIG = {
 };
 const PASSWORD = 'bonchiosamu';
 
-// ============================================================
-// STATE
-// ============================================================
 let db = null, sheetsRef = null, sessionsRef = null;
 let sheets = {}, sessions = {};
 let currentSheetId = null;
 let currentDate = getTodayStr();
-let saveTimer = null, mapTargetStoreId = null, dragSrcId = null;
+let saveTimer = null, mapTargetStoreId = null, pdfTargetStoreId = null;
 
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 function getTodayStr() { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`; }
+function getTimeStr() { const d = new Date(); return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
 function esc(s) { if(s==null)return''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function getSheet() { return sheets[currentSheetId] || null; }
 function getSession() {
@@ -349,12 +397,9 @@ function getSession() {
   return sessions[currentSheetId];
 }
 
-// ============================================================
-// LOGIN
-// ============================================================
+// ---- LOGIN ----
 function checkPassword() {
-  const pw = document.getElementById('pw-input').value;
-  if(pw === PASSWORD) {
+  if(document.getElementById('pw-input').value === PASSWORD) {
     sessionStorage.setItem('dv2_auth','1');
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
@@ -366,30 +411,26 @@ function checkPassword() {
   }
 }
 
-// ============================================================
-// FIREBASE
-// ============================================================
+// ---- FIREBASE ----
 function startApp() {
   if(db) return;
   firebase.initializeApp(FIREBASE_CONFIG);
   db = firebase.database();
-  sheetsRef = db.ref('delivery_v2/sheets');
-  sessionsRef = db.ref('delivery_v2/sessions');
+  sheetsRef = db.ref('delivery_v3/sheets');
+  sessionsRef = db.ref('delivery_v3/sessions');
   setSyncDot('connecting');
 
   sheetsRef.on('value', snap => {
     const data = snap.val();
     if(data && Object.keys(data).length > 0) {
       sheets = data;
-      Object.values(sheets).forEach(sh => { if(!sh.stores) sh.stores={}; if(!sh.columns) sh.columns=['箱個数','備考']; });
+      Object.values(sheets).forEach(sh => { if(!sh.stores) sh.stores={}; if(!sh.columns) sh.columns=[]; });
     } else {
       sheets = getInitialSheets();
       sheetsRef.set(sheets);
     }
     if(!currentSheetId || !sheets[currentSheetId]) currentSheetId = Object.keys(sheets)[0];
-    renderTabs();
-    renderCurrentScreen();
-    setSyncDot('live');
+    renderTabs(); renderCurrentScreen(); setSyncDot('live');
   }, () => setSyncDot('offline'));
 
   sessionsRef.child(currentDate).on('value', snap => {
@@ -399,83 +440,58 @@ function startApp() {
 }
 
 function pushSheets() {
-  if(!sheetsRef) return;
-  setSyncDot('saving');
-  clearTimeout(saveTimer);
+  if(!sheetsRef) return; setSyncDot('saving'); clearTimeout(saveTimer);
   saveTimer = setTimeout(() => sheetsRef.set(sheets).then(() => setSyncDot('live')).catch(() => setSyncDot('offline')), 500);
 }
-
 function pushSession() {
-  if(!sessionsRef) return;
-  setSyncDot('saving');
-  clearTimeout(saveTimer);
+  if(!sessionsRef) return; setSyncDot('saving'); clearTimeout(saveTimer);
   saveTimer = setTimeout(() => sessionsRef.child(currentDate).child(currentSheetId).set(getSession()).then(() => setSyncDot('live')).catch(() => setSyncDot('offline')), 400);
 }
-
 function setSyncDot(s) {
-  const d = document.getElementById('sync-dot');
-  d.className = 'sync-dot';
-  if(s === 'live') d.classList.add('live');
-  else if(s === 'saving') d.classList.add('saving');
+  const d = document.getElementById('sync-dot'); d.className = 'sync-dot';
+  if(s==='live') d.classList.add('live'); else if(s==='saving') d.classList.add('saving');
 }
 
-// ============================================================
-// INITIAL DATA
-// ============================================================
+// ---- INITIAL DATA ----
 function getInitialSheets() {
   const id1 = uid(), id2 = uid();
-  function ms(num, name, order) { const id = uid(); return [id, {id, num, name, address:'', order}]; }
+  function ms(name, order) { const id = uid(); return [id, {id, name, address:'', pdfUrl:'', order}]; }
   const s1 = {};
-  [['','店舗チェックシート確認'],['','追加商品確認'],['1','しのぶ庵梅田'],['2','manimani'],['3','台湾夜市'],['4','ギャング'],['5','TATARA'],['6','なにわこあま福'],['7','ルコントワ'],['8','ヤキトリボーイ'],['9','しのぶ庵新大阪'],['10','香樹'],['11','バルカフェMASSA伊丹空港'],['12','天助'],['13','しのぶ庵尼崎キューズモール']].forEach(([num,name],i) => { const [id,st] = ms(num,name,i); s1[id] = st; });
+  [['しのぶ庵梅田'],['manimani'],['台湾夜市'],['ギャング'],['TATARA'],['なにわこあま福'],['ルコントワ'],['ヤキトリボーイ'],['しのぶ庵新大阪'],['香樹'],['バルカフェMASSA伊丹空港'],['天助'],['しのぶ庵尼崎キューズモール']].forEach(([name],i) => { const [id,st] = ms(name,i); s1[id] = st; });
   const s2 = {};
-  [['','チェックシート確認'],['','冷凍商品・追加確認'],['1','新橋筋　風流'],['2','隠れ鉄板　風流'],['3','アロイチンチン'],['4','エスタジ'],['5','シャンブル'],['6','飛牛'],['7','磯乃家'],['8','さつま'],['9','南さつま'],['9','JILL'],['10','JACK'],['11','才来天'],['','マグシェ'],['','蔵文']].forEach(([num,name],i) => { const [id,st] = ms(num,name,i); s2[id] = st; });
+  [['新橋筋　風流'],['隠れ鉄板　風流'],['アロイチンチン'],['エスタジ'],['シャンブル'],['飛牛'],['磯乃家'],['さつま'],['南さつま'],['JILL'],['JACK'],['才来天'],['マグシェ'],['蔵文']].forEach(([name],i) => { const [id,st] = ms(name,i); s2[id] = st; });
   return {
-    [id1]: {name:'梅田・新大阪・豊中エリア', columns:['箱個数','そば','伝票','備考'], stores:s1},
-    [id2]: {name:'北新地', columns:['箱個数','後入れ'], stores:s2}
+    [id1]: {name:'梅田・新大阪・豊中エリア', columns:['そば','伝票','備考'], stores:s1},
+    [id2]: {name:'北新地', columns:['後入れ'], stores:s2}
   };
 }
 
-// ============================================================
-// RENDER
-// ============================================================
+// ---- RENDER ----
 function renderTabs() {
-  const bar = document.getElementById('tabs-bar');
-  const add = bar.querySelector('.tab-add');
-  bar.innerHTML = '';
-  Object.entries(sheets).forEach(([id, sh]) => {
-    const t = document.createElement('div');
-    t.className = 'tab' + (id === currentSheetId ? ' active' : '');
-    t.textContent = sh.name;
-    t.onclick = () => { currentSheetId = id; renderTabs(); renderCurrentScreen(); };
-    bar.appendChild(t);
-  });
-  bar.appendChild(add);
+  const bar = document.getElementById('tabs-bar'); const add = bar.querySelector('.tab-add'); bar.innerHTML = '';
+  Object.entries(sheets).forEach(([id,sh]) => {
+    const t = document.createElement('div'); t.className = 'tab'+(id===currentSheetId?' active':'');
+    t.textContent = sh.name; t.onclick = () => { currentSheetId=id; renderTabs(); renderCurrentScreen(); }; bar.appendChild(t);
+  }); bar.appendChild(add);
 }
 
 function renderCurrentScreen() {
-  const sess = getSession();
-  const phase = sess.phase || 'prepare';
+  const phase = (getSession().phase || 'prepare');
   updatePhaseBar(phase);
-  document.getElementById('phase-label').textContent = {prepare:'準備・入力中', check:'出発前確認', delivery:'配達中'}[phase] || '';
-  ['prepare','check','delivery'].forEach(p => document.getElementById('screen-'+p).classList.toggle('active', p === phase));
-  if(phase === 'prepare') renderPrepare();
-  else if(phase === 'check') renderCheck();
-  else if(phase === 'delivery') renderDelivery();
+  document.getElementById('phase-label').textContent = {prepare:'準備・入力中',check:'出発前確認',delivery:'配達中'}[phase]||'';
+  ['prepare','check','delivery'].forEach(p => document.getElementById('screen-'+p).classList.toggle('active', p===phase));
+  if(phase==='prepare') renderPrepare();
+  else if(phase==='check') renderCheck();
+  else if(phase==='delivery') renderDelivery();
 }
 
 function updatePhaseBar(phase) {
-  const steps = ['prepare','check','delivery'];
-  const idx = steps.indexOf(phase);
-  steps.forEach((s,i) => {
-    const el = document.getElementById('pstep-'+i);
-    el.className = 'phase-step';
-    if(i < idx) el.classList.add('done');
-    else if(i === idx) el.classList.add('active');
-  });
+  const steps=['prepare','check','delivery']; const idx=steps.indexOf(phase);
+  steps.forEach((s,i)=>{ const el=document.getElementById('pstep-'+i); el.className='phase-step'; if(i<idx)el.classList.add('done'); else if(i===idx)el.classList.add('active'); });
 }
 
 function getSortedStores(sh) {
-  return Object.entries(sh.stores || {}).sort((a,b) => (a[1].order||0) - (b[1].order||0));
+  return Object.entries(sh.stores||{}).sort((a,b)=>(a[1].order||0)-(b[1].order||0));
 }
 
 // ---- PREPARE ----
@@ -483,85 +499,64 @@ function renderPrepare() {
   const sh = getSheet(); if(!sh) return;
   document.getElementById('prepare-sheet-name').textContent = sh.name;
   const deliveries = getSession().deliveries || {};
-  const list = document.getElementById('store-list');
-  list.innerHTML = '';
-  getSortedStores(sh).forEach(([storeId, store]) => {
+  const list = document.getElementById('store-list'); list.innerHTML = '';
+  const sorted = getSortedStores(sh);
+
+  sorted.forEach(([storeId, store], idx) => {
     const vals = (deliveries[storeId] && deliveries[storeId].values) || {};
-    const card = document.createElement('div');
-    card.className = 'store-card';
-    card.dataset.id = storeId;
-    const inputsHtml = sh.columns.map((col,ci) => `
+    const boxVal = vals['box'] || '';
+    const card = document.createElement('div'); card.className = 'store-card'; card.dataset.id = storeId;
+
+    const extraInputs = sh.columns.map((col,ci) => `
       <div class="store-input-cell">
         <div class="store-input-label">${esc(col)}</div>
-        <input class="store-input-field" type="${['箱個数','そば','後入れ'].includes(col)?'number':'text'}"
-          value="${esc(vals[ci]||'')}" placeholder="-"
-          onchange="updateDeliveryValue('${storeId}',${ci},this.value)">
+        <input class="store-input-field" type="text" value="${esc(vals['col_'+ci]||'')}" placeholder="-"
+          onchange="updateDeliveryValue('${storeId}','col_${ci}',this.value)">
       </div>`).join('');
+
+    const extraSection = sh.columns.length > 0 ? `<div class="store-card-inputs">${extraInputs}</div>` : '';
+
     card.innerHTML = `
       <div class="store-card-top">
-        <div class="drag-handle">⠿</div>
-        <div class="store-num">${esc(store.num)}</div>
-        <input class="store-name-input" value="${esc(store.name)}" placeholder="店舗名"
-          onchange="updateStoreName('${storeId}',this.value)">
+        <div class="move-btns">
+          <button class="move-btn" onclick="moveStore('${storeId}',-1)" title="上へ">▲</button>
+          <button class="move-btn" onclick="moveStore('${storeId}',1)" title="下へ">▼</button>
+        </div>
+        <div class="store-name-wrap">
+          <input class="store-name-input" value="${esc(store.name)}" placeholder="店舗名"
+            onchange="updateStoreName('${storeId}',this.value)">
+        </div>
         <div class="store-actions">
-          <button class="store-map-btn" onclick="openMapModal('${storeId}')">${store.address?'📍':'🗺'}</button>
+          <button class="store-pdf-btn" onclick="openPdfModal('${storeId}')" title="配達方法PDF">${store.pdfUrl?'📄':'📋'}</button>
+          <button class="store-map-btn" onclick="openMapModal('${storeId}')" title="住所">${store.address?'📍':'🗺'}</button>
           <button class="store-del-btn" onclick="deleteStore('${storeId}')">×</button>
         </div>
       </div>
-      <div class="store-card-inputs">${inputsHtml}</div>`;
-    setupDrag(card, storeId);
+      <div class="store-box-count">
+        <div class="box-count-label">箱</div>
+        <input class="box-count-input ${boxVal?'has-value':''}" type="number" value="${esc(boxVal)}" placeholder="0"
+          oninput="updateDeliveryValue('${storeId}','box',this.value);this.classList.toggle('has-value',!!this.value)">
+      </div>
+      ${extraSection}`;
     list.appendChild(card);
   });
 }
 
-function setupDrag(card, storeId) {
-  const handle = card.querySelector('.drag-handle');
-  handle.setAttribute('draggable','true');
-  handle.addEventListener('dragstart', () => { dragSrcId = storeId; card.style.opacity = '.4'; });
-  handle.addEventListener('dragend', () => { card.style.opacity = ''; });
-  card.addEventListener('dragover', e => { e.preventDefault(); card.classList.add('drag-over'); });
-  card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
-  card.addEventListener('drop', e => { e.preventDefault(); card.classList.remove('drag-over'); if(dragSrcId && dragSrcId !== storeId) reorderStores(dragSrcId, storeId); });
-  let startY = 0, clone = null, origRect = null;
-  handle.addEventListener('touchstart', e => {
-    e.preventDefault(); dragSrcId = storeId; startY = e.touches[0].clientY; origRect = card.getBoundingClientRect();
-    clone = card.cloneNode(true);
-    clone.style.cssText = `position:fixed;top:${origRect.top}px;left:${origRect.left}px;width:${origRect.width}px;opacity:.8;z-index:999;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.3);border-radius:10px;`;
-    document.body.appendChild(clone); card.style.opacity = '.3';
-  }, {passive:false});
-  handle.addEventListener('touchmove', e => {
-    e.preventDefault(); if(!clone) return;
-    clone.style.top = (origRect.top + e.touches[0].clientY - startY) + 'px';
-    document.querySelectorAll('.store-card').forEach(c => c.classList.remove('drag-over'));
-    const t = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
-    const tc = t && t.closest('.store-card');
-    if(tc && tc.dataset.id !== storeId) tc.classList.add('drag-over');
-  }, {passive:false});
-  handle.addEventListener('touchend', e => {
-    if(clone) { clone.remove(); clone = null; } card.style.opacity = '';
-    const t = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-    const tc = t && t.closest('.store-card');
-    document.querySelectorAll('.store-card').forEach(c => c.classList.remove('drag-over'));
-    if(tc && tc.dataset.id && tc.dataset.id !== storeId) reorderStores(storeId, tc.dataset.id);
-  });
-}
-
-function reorderStores(fromId, toId) {
+function moveStore(storeId, dir) {
   const sh = getSheet();
   const sorted = getSortedStores(sh);
-  const fi = sorted.findIndex(([id]) => id === fromId);
-  const ti = sorted.findIndex(([id]) => id === toId);
-  if(fi < 0 || ti < 0) return;
-  const item = sorted.splice(fi, 1)[0];
-  sorted.splice(ti, 0, item);
-  sorted.forEach(([id], i) => { sh.stores[id].order = i; });
+  const idx = sorted.findIndex(([id]) => id === storeId);
+  const newIdx = idx + dir;
+  if(newIdx < 0 || newIdx >= sorted.length) return;
+  // swap orders
+  const a = sorted[idx][1], b = sorted[newIdx][1];
+  const tmp = a.order; a.order = b.order; b.order = tmp;
   pushSheets(); renderPrepare();
 }
 
 // ---- CHECK ----
 function renderCheck() {
-  const sess = getSession();
-  const checks = sess.checks || [false, false];
+  const checks = (getSession().checks) || [false,false];
   [0,1].forEach(i => {
     document.getElementById('chk-'+i).classList.toggle('checked', !!checks[i]);
     document.getElementById('chk-circle-'+i).textContent = checks[i] ? '✓' : '';
@@ -573,173 +568,181 @@ function renderCheck() {
 }
 
 function toggleCheck(idx) {
-  const sess = getSession();
-  if(!sess.checks) sess.checks = [false, false];
-  sess.checks[idx] = !sess.checks[idx];
-  pushSession(); renderCheck();
+  const sess = getSession(); if(!sess.checks) sess.checks=[false,false];
+  sess.checks[idx] = !sess.checks[idx]; pushSession(); renderCheck();
 }
 
 // ---- DELIVERY ----
 function renderDelivery() {
   const sh = getSheet(); if(!sh) return;
   document.getElementById('delivery-sheet-name').textContent = sh.name;
-  const sess = getSession();
-  const deliveries = sess.deliveries || {};
+  const sess = getSession(); const deliveries = sess.deliveries || {};
   const sorted = getSortedStores(sh);
-  const active = sorted.filter(([id]) => { const v = (deliveries[id] && deliveries[id].values) || {}; return Object.values(v).some(x => x !== '' && x != null); });
+  const active = sorted.filter(([id]) => { const v=(deliveries[id]&&deliveries[id].values)||{}; return v['box'] && v['box'] !== ''; });
   const display = active.length > 0 ? active : sorted;
   const doneCount = display.filter(([id]) => deliveries[id] && deliveries[id].done).length;
-  const total = display.length;
-  const pct = total ? Math.round(doneCount/total*100) : 0;
+  const total = display.length; const pct = total ? Math.round(doneCount/total*100) : 0;
   document.getElementById('prog-text').textContent = `${doneCount} / ${total} 店舗 (${pct}%)`;
   document.getElementById('prog-fill').style.width = pct + '%';
-  const list = document.getElementById('delivery-list');
-  list.innerHTML = '';
-  display.forEach(([storeId, store], idx) => {
-    const del = deliveries[storeId] || {};
-    const vals = del.values || {};
-    const done = !!del.done;
-    const meta = sh.columns.map((col,ci) => { const v = vals[ci]; return v ? `<span>${esc(col)}: <strong>${esc(v)}</strong></span>` : ''; }).filter(Boolean).join('');
-    const mapHtml = store.address ? `<div class="del-map-row"><a class="del-map-link" href="https://maps.google.com/maps?q=${encodeURIComponent(store.address)}" target="_blank" rel="noopener">📍 ${esc(store.address)}</a></div>` : '';
-    const card = document.createElement('div');
-    card.className = 'del-card' + (done ? ' done' : '');
+  const list = document.getElementById('delivery-list'); list.innerHTML = '';
+
+  display.forEach(([storeId, store]) => {
+    const del = deliveries[storeId] || {}; const vals = del.values || {};
+    const done = !!del.done; const boxNum = vals['box'] || '-';
+    const doneTime = del.doneTime || '';
+
+    const extraMeta = sh.columns.map((col,ci) => { const v=vals['col_'+ci]; return v?`<span>${esc(col)}: <b>${esc(v)}</b></span>`:''; }).filter(Boolean).join('');
+
+    const footer = (store.address || store.pdfUrl) ? `
+      <div class="del-card-footer">
+        ${store.address ? `<a class="del-map-link" href="https://maps.google.com/maps?q=${encodeURIComponent(store.address)}" target="_blank" rel="noopener">📍 地図</a>` : ''}
+        ${store.pdfUrl ? `<a class="del-pdf-link" href="${esc(store.pdfUrl)}" target="_blank" rel="noopener">📄 配達方法</a>` : ''}
+      </div>` : '';
+
+    const card = document.createElement('div'); card.className = 'del-card'+(done?' done':'');
     card.innerHTML = `
       <div class="del-card-main">
-        <div class="del-num">${esc(store.num || String(idx+1))}</div>
+        <div>
+          <div class="del-box-num">${esc(boxNum)}</div>
+          <div class="del-box-label">箱</div>
+        </div>
         <div class="del-info">
           <div class="del-name">${esc(store.name)}</div>
-          ${meta ? `<div class="del-meta">${meta}</div>` : ''}
+          ${extraMeta ? `<div class="del-meta">${extraMeta}</div>` : ''}
+          ${doneTime ? `<div class="del-time">✓ ${doneTime} 完了</div>` : ''}
         </div>
         <button class="del-btn ${done?'done-btn':'pending'}" onclick="toggleDone('${storeId}')">
-          ${done ? '完了済' : '配達完了'}
+          ${done ? '完了済' : '配達\n完了'}
         </button>
-      </div>${mapHtml}`;
+      </div>${footer}`;
     list.appendChild(card);
   });
 }
 
-// ============================================================
-// MUTATIONS
-// ============================================================
+// ---- MUTATIONS ----
 function updateStoreName(storeId, val) { getSheet().stores[storeId].name = val; pushSheets(); }
-function updateDeliveryValue(storeId, ci, val) {
+function updateDeliveryValue(storeId, key, val) {
   const sess = getSession();
   if(!sess.deliveries) sess.deliveries = {};
   if(!sess.deliveries[storeId]) sess.deliveries[storeId] = {values:{}, done:false};
   if(!sess.deliveries[storeId].values) sess.deliveries[storeId].values = {};
-  sess.deliveries[storeId].values[ci] = val;
+  sess.deliveries[storeId].values[key] = val;
   pushSession();
 }
 function toggleDone(storeId) {
   const sess = getSession();
   if(!sess.deliveries) sess.deliveries = {};
   if(!sess.deliveries[storeId]) sess.deliveries[storeId] = {values:{}, done:false};
-  sess.deliveries[storeId].done = !sess.deliveries[storeId].done;
+  const del = sess.deliveries[storeId];
+  del.done = !del.done;
+  if(del.done) {
+    // record time & reset box count
+    del.doneTime = getTimeStr();
+    if(del.values) del.values['box'] = '';
+  } else {
+    del.doneTime = '';
+  }
   pushSession(); renderDelivery();
 }
+
 function addStore() {
-  const sh = getSheet();
-  const sorted = getSortedStores(sh);
-  const numCount = sorted.filter(([,s]) => s.num).length;
+  const sh = getSheet(); const sorted = getSortedStores(sh);
   const id = uid();
-  sh.stores[id] = {id, num:String(numCount+1), name:'', address:'', order:sorted.length};
+  sh.stores[id] = {id, name:'', address:'', pdfUrl:'', order:sorted.length};
   pushSheets(); renderPrepare();
   setTimeout(() => { const ins = document.querySelectorAll('.store-name-input'); if(ins.length) ins[ins.length-1].focus(); }, 150);
 }
 function deleteStore(storeId) {
   if(!confirm('この店舗を削除しますか？')) return;
-  delete getSheet().stores[storeId];
-  pushSheets(); renderPrepare();
+  delete getSheet().stores[storeId]; pushSheets(); renderPrepare();
 }
 
-// ============================================================
-// PHASE NAVIGATION
-// ============================================================
-function goToCheck() { const s = getSession(); s.phase='check'; if(!s.checks) s.checks=[false,false]; pushSession(); renderCurrentScreen(); }
-function startDelivery() { const s = getSession(); if(!s.checks||!s.checks[0]||!s.checks[1]) return; s.phase='delivery'; pushSession(); renderCurrentScreen(); }
-function goToPhase(p) { if(p==='prepare' && !confirm('準備画面に戻りますか？')) return; getSession().phase=p; pushSession(); renderCurrentScreen(); }
-function backToPrepare() { if(!confirm('準備画面に戻りますか？（入力データは保持されます）')) return; getSession().phase='prepare'; pushSession(); renderCurrentScreen(); }
-function endDelivery() { if(!confirm('配達を終了して準備画面に戻りますか？')) return; getSession().phase='prepare'; pushSession(); renderCurrentScreen(); }
+// ---- PHASE NAV ----
+function goToCheck() { const s=getSession(); s.phase='check'; if(!s.checks)s.checks=[false,false]; pushSession(); renderCurrentScreen(); }
+function startDelivery() { const s=getSession(); if(!s.checks||!s.checks[0]||!s.checks[1])return; s.phase='delivery'; pushSession(); renderCurrentScreen(); }
+function goToPhase(p) { if(p==='prepare'&&!confirm('準備画面に戻りますか？'))return; getSession().phase=p; pushSession(); renderCurrentScreen(); }
+function backToPrepare() { if(!confirm('準備画面に戻りますか？（入力データは保持されます）'))return; getSession().phase='prepare'; pushSession(); renderCurrentScreen(); }
+function endDelivery() { if(!confirm('配達を終了して準備画面に戻りますか？'))return; getSession().phase='prepare'; pushSession(); renderCurrentScreen(); }
 
-// ============================================================
-// SHEET MANAGEMENT
-// ============================================================
+// ---- SHEET MANAGEMENT ----
 function addSheet() {
-  const name = prompt('新しいシートのエリア名:'); if(!name) return;
-  const id = uid(), sid = uid();
-  sheets[id] = {name, columns:['箱個数','備考'], stores:{[sid]:{id:sid,num:'',name:'チェックシート確認',address:'',order:0}}};
-  currentSheetId = id; pushSheets(); renderTabs(); renderCurrentScreen();
+  const name = prompt('新しいシートのエリア名:'); if(!name)return;
+  const id=uid(), sid=uid();
+  sheets[id] = {name, columns:[], stores:{[sid]:{id:sid,name:'',address:'',pdfUrl:'',order:0}}};
+  currentSheetId=id; pushSheets(); renderTabs(); renderCurrentScreen();
 }
 function openSheetModal() {
-  const sh = getSheet();
-  document.getElementById('sm-name').value = sh.name;
-  renderColTags(sh.columns);
-  document.getElementById('sheet-modal').classList.add('open');
+  const sh=getSheet(); document.getElementById('sm-name').value=sh.name;
+  renderColTags(sh.columns); document.getElementById('sheet-modal').classList.add('open');
 }
 function renderColTags(cols) {
-  document.getElementById('sm-cols-wrap').innerHTML = cols.map((c,i) => `<span class="col-tag">${esc(c)}<button class="col-remove" onclick="removeColumn(${i})">×</button></span>`).join('');
+  document.getElementById('sm-cols-wrap').innerHTML = cols.map((c,i)=>`<span class="col-tag">${esc(c)}<button class="col-remove" onclick="removeColumn(${i})">×</button></span>`).join('');
 }
-function removeColumn(ci) { const sh = getSheet(); if(sh.columns.length<=1){alert('列は最低1つ必要です');return;} sh.columns.splice(ci,1); renderColTags(sh.columns); }
-function addColumn() { const inp = document.getElementById('sm-new-col'); const name = inp.value.trim(); if(!name) return; getSheet().columns.push(name); renderColTags(getSheet().columns); inp.value=''; }
-function saveSheetSettings() { const sh = getSheet(); const name = document.getElementById('sm-name').value.trim(); if(name) sh.name=name; pushSheets(); renderTabs(); renderCurrentScreen(); closeModal('sheet-modal'); }
+function removeColumn(ci) { const sh=getSheet(); if(sh.columns.length<=0)return; sh.columns.splice(ci,1); renderColTags(sh.columns); }
+function addColumn() { const inp=document.getElementById('sm-new-col'); const name=inp.value.trim(); if(!name)return; getSheet().columns.push(name); renderColTags(getSheet().columns); inp.value=''; }
+function saveSheetSettings() { const sh=getSheet(); const name=document.getElementById('sm-name').value.trim(); if(name)sh.name=name; pushSheets(); renderTabs(); renderCurrentScreen(); closeModal('sheet-modal'); }
 function deleteSheet() {
   if(Object.keys(sheets).length<=1){alert('シートは最低1つ必要です');return;}
-  if(!confirm(`「${getSheet().name}」を削除しますか？`)) return;
-  delete sheets[currentSheetId]; currentSheetId = Object.keys(sheets)[0];
+  if(!confirm(`「${getSheet().name}」を削除しますか？`))return;
+  delete sheets[currentSheetId]; currentSheetId=Object.keys(sheets)[0];
   pushSheets(); renderTabs(); renderCurrentScreen(); closeModal('sheet-modal');
 }
 
-// ============================================================
-// MAP
-// ============================================================
-let mapTimer = null;
+// ---- MAP ----
+let mapTimer=null;
 function openMapModal(storeId) {
-  mapTargetStoreId = storeId;
-  const store = getSheet().stores[storeId];
-  document.getElementById('map-modal-title').textContent = '📍 ' + (store.name || '住所登録');
-  document.getElementById('map-addr-input').value = store.address || '';
-  updateMapPreview();
+  mapTargetStoreId=storeId; const store=getSheet().stores[storeId];
+  document.getElementById('map-modal-title').textContent='📍 '+(store.name||'住所登録');
+  document.getElementById('map-addr-input').value=store.address||''; updateMapPreview();
   document.getElementById('map-modal').classList.add('open');
 }
 function updateMapPreview() {
-  const addr = document.getElementById('map-addr-input').value.trim();
-  clearTimeout(mapTimer);
-  if(!addr) { document.getElementById('map-preview').classList.add('hidden'); document.getElementById('map-open-link').classList.add('hidden'); return; }
-  mapTimer = setTimeout(() => {
-    const enc = encodeURIComponent(addr);
-    document.getElementById('map-iframe').src = `https://maps.google.com/maps?q=${enc}&output=embed&hl=ja`;
+  const addr=document.getElementById('map-addr-input').value.trim(); clearTimeout(mapTimer);
+  if(!addr){document.getElementById('map-preview').classList.add('hidden');document.getElementById('map-open-link').classList.add('hidden');return;}
+  mapTimer=setTimeout(()=>{
+    const enc=encodeURIComponent(addr);
+    document.getElementById('map-iframe').src=`https://maps.google.com/maps?q=${enc}&output=embed&hl=ja`;
     document.getElementById('map-preview').classList.remove('hidden');
-    document.getElementById('map-open-link').href = `https://maps.google.com/maps?q=${enc}`;
+    document.getElementById('map-open-link').href=`https://maps.google.com/maps?q=${enc}`;
     document.getElementById('map-open-link').classList.remove('hidden');
-  }, 700);
+  },700);
 }
-function saveMapAddress() { getSheet().stores[mapTargetStoreId].address = document.getElementById('map-addr-input').value.trim(); pushSheets(); renderPrepare(); closeModal('map-modal'); }
+function saveMapAddress() { getSheet().stores[mapTargetStoreId].address=document.getElementById('map-addr-input').value.trim(); pushSheets(); renderPrepare(); closeModal('map-modal'); }
 
-// ============================================================
-// SETTINGS / RESET
-// ============================================================
+// ---- PDF ----
+function openPdfModal(storeId) {
+  pdfTargetStoreId=storeId; const store=getSheet().stores[storeId];
+  document.getElementById('pdf-modal-title').textContent='📄 '+(store.name||'配達方法PDF');
+  const url=store.pdfUrl||'';
+  document.getElementById('pdf-url-input').value=url;
+  const link=document.getElementById('pdf-preview-link');
+  if(url){link.href=url;link.classList.remove('hidden');}else{link.classList.add('hidden');}
+  document.getElementById('pdf-modal').classList.add('open');
+}
+function savePdfUrl() {
+  const url=document.getElementById('pdf-url-input').value.trim();
+  getSheet().stores[pdfTargetStoreId].pdfUrl=url; pushSheets(); renderPrepare(); closeModal('pdf-modal');
+}
+
+// ---- SETTINGS ----
 function showSettings() { document.getElementById('settings-modal').classList.add('open'); }
 function resetAllData() {
-  if(!confirm('全データを初期化しますか？この操作は元に戻せません。')) return;
-  db.ref('delivery_v2').set({sheets:getInitialSheets(), sessions:{}}).then(() => location.reload());
+  if(!confirm('全データを初期化しますか？'))return;
+  db.ref('delivery_v3').set({sheets:getInitialSheets(),sessions:{}}).then(()=>location.reload());
 }
 
-// ============================================================
-// MODAL
-// ============================================================
+// ---- MODAL ----
 function closeModal(id) { document.getElementById(id).classList.remove('open'); if(id==='map-modal') document.getElementById('map-iframe').src=''; }
 
-// ============================================================
-// BOOT
-// ============================================================
+// ---- BOOT ----
 window.onload = () => {
-  document.querySelectorAll('.modal-overlay').forEach(el => el.addEventListener('click', e => { if(e.target===el) closeModal(el.id); }));
-  if(sessionStorage.getItem('dv2_auth') === '1') {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
+  document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)closeModal(el.id);}));
+  if(sessionStorage.getItem('dv2_auth')==='1') {
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
     startApp();
   } else {
-    setTimeout(() => document.getElementById('pw-input').focus(), 300);
+    setTimeout(()=>document.getElementById('pw-input').focus(),300);
   }
 };
 </script>
