@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>配達アプリナカヤマくん</title>
+<title>がんばれナカヤマくん</title>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <style>
@@ -186,7 +186,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
-    <div class="login-title">配達アプリ<br>ナカヤマくん</div>
+    <div class="login-title">がんばれ<br>ナカヤマくん</div>
     <div class="login-sub">配送管理システム</div>
     <div class="login-card">
       <label class="login-label">パスワード</label>
@@ -202,7 +202,7 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--paper);color:var(--i
 <div id="app" style="display:none">
   <div class="topbar">
     <div>
-      <div class="topbar-title">配達アプリナカヤマくん</div>
+      <div class="topbar-title">がんばれナカヤマくん</div>
       <div class="topbar-phase" id="phase-label">準備中</div>
     </div>
     <div class="topbar-right">
@@ -636,10 +636,10 @@ function toggleDone(storeId) {
   const del = sess.deliveries[storeId];
   del.done = !del.done;
   if(del.done) {
-    // record time & reset box count
+    // 完了時刻を記録（箱数はリセットしない・時刻は残す）
     del.doneTime = getTimeStr();
-    if(del.values) del.values['box'] = '';
   } else {
+    // 完了取り消し時は時刻もクリア
     del.doneTime = '';
   }
   pushSession(); renderDelivery();
